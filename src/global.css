@@ -1,0 +1,136 @@
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.ant-layout {
+  height: 100%;
+}
+
+/*表格head*/
+.ant-table-thead {
+  background-color: #fafafa;
+}
+
+.table-operations {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.table-operations > button {
+  margin-right: 8px;
+}
+
+/*.ant-tabs-bar {*/
+/*margin-bottom: 0px;*/
+/*}*/
+
+.ant-advanced-search-form {
+  padding: 8px;
+  background: #fbfbfb;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.ant-advanced-search-form .ant-form-item {
+  display: flex;
+}
+
+.ant-advanced-search-form .ant-form-item-control-wrapper {
+  flex: 1;
+}
+
+.search-body {
+  padding-top: 5px;
+}
+
+.search-footer {
+  text-align: right;
+  /*margin-top: -16px;*/
+}
+
+/*搜索面板样式*/
+.search-body .ant-advanced-search-form .ant-col {
+  /*background-color: #108ee9;*/
+  height: 40px;
+}
+
+/*返回顶部按钮*/
+.ant-back-top {
+  right: 18px !important;
+  margin-bottom: 80px;
+}
+
+/*modal 弹框 确定*/
+.ant-spin-nested-loading {
+  margin-bottom: -24px;
+}
+
+/*输入框框高*/
+.ant-form-item-control {
+  line-height: 35px;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-table-small {
+  border-bottom: 1px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
+  border-left: 0px solid #e8e8e8;
+  border-right: 0px solid #e8e8e8;
+  border-radius: 0px;
+}
+
+/*表格按钮*/
+.table-header-btn {
+  text-align: end;
+  margin-right: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/*左树右卡*/
+.tree-card {
+  display: flex;
+}
+
+.tree-card .left-tree {
+  background: #fbfbfb;
+  min-height: 100%;
+  height: calc(100vh - 120px);
+  min-width: 200px;
+  overflow-x: scroll;
+  border-right: 1px solid #e8e8e8;
+  padding: 8px;
+  -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+}
+
+.tree-card .right-card {
+  /*padding: 24px;*/
+  background: #fbfbfb;
+  /*border: 1px solid #d9d9d9;*/
+  /*margin-left: 24px;*/
+  flex: auto;
+  min-width: 500px;
+}
+
+/*流程图展示*/
+#approveCanvas .djs-palette.two-column.open {
+  display: none;
+}
+
+#approveCanvas .djs-context-pad.open {
+  display: none;
+}
+
+/*bpmn logo*/
+.bjs-powered-by {
+  display: none;
+}
+
