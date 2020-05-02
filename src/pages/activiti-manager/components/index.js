@@ -20,12 +20,11 @@ class App extends React.Component {
   state = {
     loading: false,
     visible: false,
+    status: "add",
     basic: {},
   };
 
-  departmentId = "";
-
-
+  departmentId="";
   columns = [
     {
       title: '序号',
@@ -88,14 +87,15 @@ class App extends React.Component {
 
 
   // 获取数据
-  getMainData = (payload = {}) => {
+  getData = (payload = {}) => {
     this.setState({loading: true});
     const searchObj = this.childSearch.getSearchValue();
     const {pageNumber, pageSize} = this.props.activitiManagerModel.docData;
+    const departmentId=this.departmentId;
     // 获取分页数,分页数量
     this.props.dispatch({
       type: 'activitiManagerModel/getDocData',
-      payload: {pageNumber, pageSize, ...searchObj, ...payload},
+      payload: {pageNumber, pageSize, ...searchObj, ...payload,departmentId},
       callback: (data) => {
         let stateTemp = {loading: false};
         this.setState(stateTemp);
@@ -107,9 +107,9 @@ class App extends React.Component {
   // onApply
   onApply = (payload = {}) => {
     this.setState({loading: true});
-    const {basicData}=this.state;
-    payload.docId=basicData.id;
-    payload.departmentId=this.departmentId;
+    const {basicData} = this.state;
+    payload.docId = basicData.id;
+    payload.departmentId = basicData.departmentId;
 
     this.props.dispatch({
       type: 'activitiManagerModel/addAuth',
@@ -124,13 +124,13 @@ class App extends React.Component {
 
   // 搜索面板值
   onSearchPanel = (param) => {
-    this.getMainData({...param});
+    this.getData({...param});
   };
 
   // 修改分页
   onChangePage = (data) => {
     // 获取分页数据
-    this.getMainData({...getPageParam(data)});
+    this.getData({...getPageParam(data)});
   };
 
 
@@ -141,8 +141,8 @@ class App extends React.Component {
   // 树节点点击
   onSelectTree = (item) => {
     const {id} = item[0];
-    this.departmentId = id;
-    this.getMainData({departmentId: id});
+    this.departmentId=id;
+    this.getData({departmentId: id});
   };
 
   onClickClose = () => {
@@ -150,12 +150,12 @@ class App extends React.Component {
   }
 
   onClickShow = (basicData) => {
-    this.setState({visible: true, basicData});
+    this.setState({visible: true, basicData, status: 'add'});
   }
 
 
   render() {
-    const {loading, basicData} = this.state;
+    const {loading, basicData, visible, status} = this.state;
     const {docData} = this.props.activitiManagerModel;
 
     const {pageNumber, total, pageSize, rows} = docData;

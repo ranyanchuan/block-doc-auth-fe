@@ -47,6 +47,7 @@ class ActionModal extends React.Component {
     const {visible, form, status, basicData = {}} = this.props;
     const disabled = (status === 'desc') ? true : false;
 
+
     return (
       <Modal
         title={titleObj[status]}
@@ -78,6 +79,7 @@ class ActionModal extends React.Component {
               <Col span={24}>
                 <ConDate
                   form={form}
+
                   id="eTime"
                   label="结束"
                   placeholder="请选择结束时间"
@@ -89,12 +91,17 @@ class ActionModal extends React.Component {
               <Col span={24}>
                 <ConTextArea
                   form={form}
+                  height={"60px"}
                   id="note"
                   label="备注"
                   placeholder="请输入备注"
                   message='请输入备注'
                   required={true}
                   defValue={basicData.note}
+                  formItemLayout = {{
+                    labelCol: { sm: { span: 6 } },
+                    wrapperCol: { sm: { span: 18 } },
+                  }}
                 />
               </Col>
 
