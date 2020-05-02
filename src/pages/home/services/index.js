@@ -4,7 +4,7 @@ const api = {
   getAuth: '/api/auth/select/', // 查看
   addApproval: '/api/auth/approval/', // 查看
   getBlock: '/api/block/select/', // 查看
-  getDoc: '/api/doc/insert', // 查看
+  getDoc: '/api/doc/select', // 查看
   delDoc: '/api/doc/delete', // 查看
   addDoc: '/api/doc/insert', // 查看
 };
@@ -42,7 +42,7 @@ export async function getDoc(payload) {
 
 export async function delDoc(payload) {
   return requestJson(api.delDoc, {
-    method: 'POST',
+    method: 'GET',
     payload,
   });
 }

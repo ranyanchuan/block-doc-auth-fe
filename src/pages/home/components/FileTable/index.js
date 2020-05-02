@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import {Table, Spin, Modal} from 'antd';
-import {checkError, checkEdit, getPageParam} from 'utils';
+import {checkError, checkEdit, getPageParam, delMore} from 'utils';
 import moment from 'moment';
 import ConRadioGroup from "components/ConRadioGroup";
 
@@ -54,6 +54,9 @@ class App extends React.Component {
       title: '路径',
       dataIndex: 'fileUrl',
       key: 'fileUrl',
+      render: (text) => {
+        return text ? `images/${text}` : '';
+      }
     },
     {
       title: '创建时间',
@@ -62,6 +65,16 @@ class App extends React.Component {
       render: (text) => {
         return text ? moment(text).format(ruleDate) : '';
       },
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+           <a onClick={this.showDelCon.bind(this, record)}>删除</a>
+       </span>
+      ),
     },
   ];
 
@@ -72,7 +85,7 @@ class App extends React.Component {
     payload.type = "file";
     const _this = this;
     this.props.dispatch({
-      type: 'homeModel/getBlockData',
+      type: 'homeModel/getDocData',
       payload,
       callback: (data) => {
         let stateTemp = {loading: false};
@@ -84,7 +97,7 @@ class App extends React.Component {
 
   //添加表格数据
   addData = (payload, callback) => {
-    payload.type = "file";
+    payload.category = "file";
     this.props.dispatch({
       type: 'homeModel/addDoc',
       payload,
@@ -100,17 +113,17 @@ class App extends React.Component {
   };
 
   //删除表格数据
-  delDoc = (payload, callback) => {
+  delDoc = (payload) => {
+
+    debugger
+    const {id} = delMore(payload);
     this.props.dispatch({
       type: 'homeModel/delDoc',
-      payload,
+      payload: {id},
       callback: (value) => {
-        let temp = false;
         if (checkError(value)) {
-          temp = true;
           this.getData();
         }
-        callback(temp);
       },
     });
   };
@@ -141,6 +154,7 @@ class App extends React.Component {
   // 删除弹框确认
   showDelCon = (payload) => {
     const _this = this;
+    debugger
     confirm({
       title: '您确定要删除吗',
       content: '',
@@ -149,7 +163,7 @@ class App extends React.Component {
       cancelText: '否',
       onOk() {
         // 删除数据
-        _this.delMainData(payload);
+        _this.delDoc(payload);
       },
       onCancel() {
         console.log('取消删除');
@@ -157,12 +171,32 @@ class App extends React.Component {
     });
   };
 
+  onClickDel = () => {
+    console.log('selectedRow', this.selectedRow);
+    if (this.selectedRow.length > 0) {
+      this.showDelCon(this.selectedRow);
+    } else {
+      message.warning('请选择数据');
+    }
+  };
+
+  // 表格多选
+  onSelectChange = (selectedRowKeys, selectedRow) => {
+    this.selectedRow = selectedRow;
+  };
+
 
   render() {
     const {loading, visible, status} = this.state;
 
-    const {taskData} = this.props.homeModel;
-    const {pageNumber, total, pageSize, rows} = taskData;
+    const {docData} = this.props.homeModel;
+    const {pageNumber, total, pageSize, rows} = docData;
+
+    // 流程状态: 未发布、启用、停用
+    const rowSelection = {
+      onChange: this.onSelectChange,
+    };
+
     return (
       <div>
         <Spin spinning={loading}>
@@ -173,9 +207,9 @@ class App extends React.Component {
           />
 
           <ConRadioGroup
-            defaultValue={'add'}
+            // defaultValue={'add'}
             onClickAdd={this.onClickAddShow}
-            onClickDel={this.showDelCon}
+            onClickDel={this.onClickDel}
           />
 
           {/*添加表单*/}
@@ -191,7 +225,7 @@ class App extends React.Component {
           <Table
             className={styles.table}
             rowKey={record => record.id.toString()}
-            // rowSelection={rowSelection}
+            rowSelection={rowSelection}
             columns={this.columns}
             size="small"
             dataSource={rows}
