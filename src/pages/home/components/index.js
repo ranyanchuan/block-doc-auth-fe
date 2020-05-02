@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'dva';
 import {Table, Spin, Tabs} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
-import TTable from './TTable';
+import TaskTable from './TaskTable';
 import moment from 'moment';
 import router from "umi/router";
 import ConRadioGroup from "components/ConRadioGroup";
@@ -88,7 +88,7 @@ class ProductApp extends React.Component {
               <TabPane tab="阅读区块" key="5"/>
               <TabPane tab="评论区块" key="6"/>
             </Tabs>
-            <TTable/>
+            <TaskTable/>
           </div>
 
 
