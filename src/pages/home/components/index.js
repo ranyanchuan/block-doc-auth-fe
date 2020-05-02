@@ -1,15 +1,15 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin, Tabs} from 'antd';
+import {Spin, Tabs} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import TaskTable from './TaskTable';
-import moment from 'moment';
-import router from "umi/router";
-import ConRadioGroup from "components/ConRadioGroup";
+import ApprovalTable from './ApprovalTable';
+import CommentTable from './CommentTable';
+import FileTable from './FileTable';
+import ReadTable from './ReadTable';
+import TotalTable from './TotalTable';
 
-import Search from './Search';
 
-const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
 
 const {TabPane} = Tabs;
@@ -88,11 +88,34 @@ class ProductApp extends React.Component {
               <TabPane tab="阅读区块" key="5"/>
               <TabPane tab="评论区块" key="6"/>
             </Tabs>
+
+
+            {activeKey == '1' &&
             <TaskTable/>
+            }
+
+            {activeKey == '2' &&
+            <FileTable/>
+            }
+
+
+            {activeKey == '3' &&
+            <TotalTable/>
+            }
+
+            {activeKey == '4' &&
+            <ApprovalTable/>
+            }
+
+            {activeKey == '5' &&
+            <ReadTable/>
+            }
+
+            {activeKey == '6' &&
+            <CommentTable/>
+            }
+
           </div>
-
-
-
         </Spin>
       </div>
     );
