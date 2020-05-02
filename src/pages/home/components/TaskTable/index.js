@@ -32,7 +32,7 @@ class App extends React.Component {
     this.setState({loading: true});
     const _this = this;
     this.props.dispatch({
-      type: 'homeModel/getData',
+      type: 'homeModel/getTaskData',
       payload,
       callback: (data) => {
         let stateTemp = {loading: false};
@@ -45,7 +45,7 @@ class App extends React.Component {
   //添加表格数据
   addData = (payload, callback) => {
     this.props.dispatch({
-      type: 'homeModel/addData',
+      type: 'homeModel/addApproval',
       payload,
       callback: (value) => {
         let temp = false;

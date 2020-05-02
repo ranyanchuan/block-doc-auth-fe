@@ -23,16 +23,16 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const userId = localStorage.getItem("userId");
     this.getData();
   }
 
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
+    payload.type="file";
     const _this = this;
     this.props.dispatch({
-      type: 'homeModel/getData',
+      type: 'homeModel/getBlockData',
       payload,
       callback: (data) => {
         let stateTemp = {loading: false};
@@ -45,7 +45,7 @@ class App extends React.Component {
   //添加表格数据
   addData = (payload, callback) => {
     this.props.dispatch({
-      type: 'homeModel/addData',
+      type: 'homeModel/addDoc',
       payload,
       callback: (value) => {
         let temp = false;
@@ -57,6 +57,23 @@ class App extends React.Component {
       },
     });
   };
+
+  //删除表格数据
+  delDoc = (payload, callback) => {
+    this.props.dispatch({
+      type: 'homeModel/delDoc',
+      payload,
+      callback: (value) => {
+        let temp = false;
+        if (checkError(value)) {
+          temp = true;
+          this.getData();
+        }
+        callback(temp);
+      },
+    });
+  };
+
 
   // 搜索面板值
   onSearchPanel = (param) => {
