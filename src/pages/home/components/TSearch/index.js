@@ -59,12 +59,12 @@ class Search extends React.Component {
         >
 
           <Row >
-            <Col  xs={6} sm={6} md={6} lg={7} xl={7}>
+            <Col  xs={6} sm={4} md={4} lg={4} xl={4}>
               <ConInput
                 form={form}
                 formItemLayout={formItemLayout}
                 id="docTitle"
-                label="文件名称"
+                // label="文件名称"
                 placeholder="文件名称"
               />
             </Col>

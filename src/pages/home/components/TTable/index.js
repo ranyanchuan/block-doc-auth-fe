@@ -133,11 +133,6 @@ class App extends React.Component {
             onRef={(value) => this.child = value}
           />
 
-          <ConRadioGroup
-            defaultValue={'add'}
-            onClickAdd={this.onShowModal}
-          />
-
           <Table
             className={styles.table}
             rowKey={record => record.id.toString()}

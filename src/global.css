@@ -30,7 +30,9 @@ body {
 /*}*/
 
 .ant-advanced-search-form {
-  padding: 8px;
+  /*padding: 8px;*/
+  padding: 12px 8px 8px 8px;
+
   background: #fbfbfb;
   border-bottom: 1px solid #e8e8e8;
 }
@@ -44,7 +46,7 @@ body {
 }
 
 .search-body {
-  padding-top: 5px;
+  /*padding-top: 5px;*/
 }
 
 .search-footer {
