@@ -65,39 +65,41 @@ class App extends React.Component {
       },
     },
     {
-      title: '用户',
+      title: '存证人',
       dataIndex: 'userName',
       key: 'userName',
     },
+
     {
-      title: '部门',
-      dataIndex: 'departmentTitle',
-      key: 'departmentTitle',
+      title: '类型',
+      dataIndex: 'category',
+      key: 'category'
     },
 
     {
-      title: '文件名称',
-      dataIndex: 'docTitle',
-      key: 'docTitle'
-    },
-
-    {
-      title: '开始时间',
-      dataIndex: 'sTime',
-      key: 'sTime'
-    },
-    {
-      title: '到期时间',
-      dataIndex: 'eTime',
-      key: 'eTime'
-    },
-    {
-      title: '申请时间',
+      title: '存证时间',
       dataIndex: 'createTime',
       key: 'createTime',
       render: (text) => {
         return text ? moment(text).format(ruleDate) : '';
       },
+    },
+
+    {
+      title: '区块高度',
+      dataIndex: 'height',
+      key: 'height',
+    },
+    {
+      title: '存证哈希值',
+      dataIndex: 'hash',
+      key: 'hash',
+    },
+
+    {
+      title: '内容',
+      dataIndex: 'data',
+      key: 'data',
     },
   ];
 

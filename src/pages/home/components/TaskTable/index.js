@@ -1,11 +1,8 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin, Divider} from 'antd';
+import {Table, Spin} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
-import router from "umi/router";
-import ConRadioGroup from "components/ConRadioGroup";
-
 import Search from '../TSearch';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
@@ -23,7 +20,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const userId = localStorage.getItem("userId");
     this.getData();
   }
 

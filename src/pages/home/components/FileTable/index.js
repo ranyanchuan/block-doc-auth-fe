@@ -168,7 +168,6 @@ class App extends React.Component {
   };
 
   onClickDel = () => {
-    console.log('selectedRow', this.selectedRow);
     if (this.selectedRow.length > 0) {
       this.showDelCon(this.selectedRow);
     } else {
@@ -234,7 +233,6 @@ class App extends React.Component {
               pageSize: pageSize,
             }}
 
-            // loading={loading}
             onChange={this.onChangePage}
           />
         </Spin>
