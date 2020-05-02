@@ -5,7 +5,7 @@ export default {
 
   state: {
 
-    appData: {
+    taskData: {
       rows: [],
       pageNumber: 1,
       total: 0,
@@ -32,7 +32,7 @@ export default {
     * getData({payload, callback}, {call, put, select}) {
       const { data } = yield call(services.getBlock, payload);
       if (data) {
-        yield put({type: 'updateState', res: {appData: data}});
+        yield put({type: 'updateState', res: {taskData: data}});
       }
       if (callback) {
         callback(data);
