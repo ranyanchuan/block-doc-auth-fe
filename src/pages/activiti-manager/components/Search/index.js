@@ -65,8 +65,8 @@ class Search extends React.Component {
                 form={form}
                 formItemLayout={formItemLayout}
                 id="title"
-                label="名称"
-                placeholder="名称"
+                // label="名称"
+                placeholder="标题"
               />
             </Col>
             <Col xs={6} sm={6} md={6} lg={4} xl={4} className="search-footer">
