@@ -6,7 +6,7 @@ const {TreeNode} = Tree;
 
 class ConTreeNode extends React.Component {
   state = {
-    selectedKeys: ['2'],
+    selectedKeys: [''],
     treeData: [],
   };
 
@@ -21,13 +21,14 @@ class ConTreeNode extends React.Component {
 
     temp.treeData = treeData;
     if (treeData.length > 0) {
-      // temp.selectedKeys = [treeData[0][treeId]];
-      // todo 获取第一个叶子节点
-      temp.selectedKeys = ["2"];
+      //  获取第一个叶子节点
+      const selectedKeys = this.getFirstIsLeaf(data)[treeId];
+      temp.selectedKeys = [selectedKeys];
+      if (onSelect) { // 选中事件
+        this.props.onSelect([selectedKeys]);
+      }
     }
-    if (onSelect) { // 选中事件
-      this.props.onSelect([treeData[0]]);
-    }
+
     if (onRef) { // 是否父调用子
       this.props.onRef(this);
     }
@@ -35,11 +36,15 @@ class ConTreeNode extends React.Component {
   }
 
 
-  // 获取第一个子节点
-  getFirstChildNode = (data) => {
+  // 获取第一个被选中的叶子节点
 
-
-  };
+  getFirstIsLeaf = (data) => {
+    if (Array.isArray(data) && data.length > 0 && data[0].children && data[0].children.length > 0) {
+      return this.getFirstIsLeaf(data[0].children);
+    } else {
+      return data[0];
+    }
+  }
 
 
   // 获取
@@ -75,6 +80,7 @@ class ConTreeNode extends React.Component {
   onCheck = checkedKeys => {
     this.setState({checkedKeys});
   };
+
 
   // 节点选中
   onSelect = (selectedKeys, param) => {
@@ -119,14 +125,14 @@ class ConTreeNode extends React.Component {
       <span>
 
         {treeData && treeData.length > 0 &&
-          <Tree
-            {...this.props}
-            onSelect={this.onSelect}
-            selectedKeys={selectedKeys}
-            defaultExpandAll={true}
-          >
-            {this.renderTreeNodes(treeData)}
-          </Tree>
+        <Tree
+          {...this.props}
+          onSelect={this.onSelect}
+          selectedKeys={selectedKeys}
+          defaultExpandAll={true}
+        >
+          {this.renderTreeNodes(treeData)}
+        </Tree>
         }
         </span>
     );

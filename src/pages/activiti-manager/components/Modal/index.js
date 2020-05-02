@@ -1,15 +1,13 @@
 import React from 'react';
 import {Form, Modal, Row, Col, Spin} from 'antd';
-
-import ConInput from 'components/ConInput';
-import ConUploadFile from 'components/ConUploadFile';
-
+import moment from 'moment/moment';
+import ConDate from 'components/ConDate';
+import ConTextArea from 'components/ConTextArea';
 import {footer} from 'utils';
+const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 
 const titleObj = {
-  add: '添加存证信息',
-  edit: '编辑存证信息',
-  desc: '查看存证信息',
+  add: '申请查看文档',
 };
 
 @Form.create()
@@ -20,7 +18,6 @@ class ActionModal extends React.Component {
     loading: false,
   };
 
-  fileUrl = "";
 
   //  关闭添加信息弹框
   hideModal = (status) => {
@@ -29,7 +26,6 @@ class ActionModal extends React.Component {
       this.props.form.resetFields();
     }
     this.setState({loading: false});
-    this.fileUrl = "";
   };
   //  提交form信息弹框
   handleSubmit = (e) => {
@@ -37,16 +33,13 @@ class ActionModal extends React.Component {
     this.props.form.validateFields((err, fieldsValue) => {
       if (!err) {
         this.setState({loading: true});
-        fieldsValue.fileUrl = this.fileUrl;
+        fieldsValue.sTime = moment(fieldsValue.sTime).format(ruleDate);
+        fieldsValue.eTime = moment(fieldsValue.eTime).format(ruleDate);
+
         this.props.onSave(fieldsValue, this.hideModal);
       }
     });
   };
-
-
-  onChange = (link, value) => {
-    this.fileUrl = link;
-  }
 
 
   render() {
@@ -72,38 +65,39 @@ class ActionModal extends React.Component {
             <Row>
 
               <Col span={24}>
-                <ConInput
+                <ConDate
                   form={form}
-                  id="category"
-                  label="存证类型"
-                  placeholder="请输入存证类型"
-                  message='请输入存证类型'
+                  id="sTime"
+                  label="开始时间"
+                  placeholder="请选择开始时间"
+                  message='请选择开始时间'
                   required={true}
-                  disabled={disabled}
-                  defValue={basicData.category}
+                  defValue={basicData.sTime}
                 />
               </Col>
-
               <Col span={24}>
-
-                <ConUploadFile
-                  formItemLayout={{
-                    labelCol: {sm: {span: 6}},
-                    wrapperCol: {sm: {span: 18}},
-                  }}
-                  listType='text'
+                <ConDate
                   form={form}
-                  id="fileUrl"
-                  defValue={basicData.fileUrl}
-                  disabled={disabled}
-                  label="文件"
-                  title="上传文件"
-                  message='请上传文件'
-                  onChange={this.onChange}
+                  id="eTime"
+                  label="结束"
+                  placeholder="请选择结束时间"
+                  message='请选择结束时间'
+                  required={true}
+                  defValue={basicData.eTime}
                 />
-
-
               </Col>
+              <Col span={24}>
+                <ConTextArea
+                  form={form}
+                  id="note"
+                  label="备注"
+                  placeholder="请输入备注"
+                  message='请输入备注'
+                  required={true}
+                  defValue={basicData.note}
+                />
+              </Col>
+
 
             </Row>
           </Form>

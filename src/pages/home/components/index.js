@@ -29,13 +29,8 @@ class ProductApp extends React.Component {
     activeKey: '1',
   };
 
-  componentDidMount() {
-
-  }
-
 
   onChangeTab = (value) => {
-    console.log("value", value)
     this.setState({activeKey: value});
   }
 

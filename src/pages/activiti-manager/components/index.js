@@ -4,6 +4,7 @@ import {connect} from 'dva';
 import {Badge, Modal, Table, Spin,} from 'antd';
 
 import ConTreeNode from 'components/ConTreeNode';
+import ActionModal from "./Modal";
 
 
 import Search from './Search';
@@ -18,6 +19,8 @@ class App extends React.Component {
 
   state = {
     loading: false,
+    visible: false,
+    basic: {},
   };
 
   departmentId = "";
@@ -42,16 +45,19 @@ class App extends React.Component {
       dataIndex: 'abs',
       key: 'abs',
     },
+
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      title: '开始时间',
+      dataIndex: 'sTime',
+      key: 'sTime',
     },
+
     {
       title: '到期时间',
       dataIndex: 'eTime',
       key: 'eTime',
     },
+
     {
       title: '状态',
       dataIndex: 'state',
@@ -59,8 +65,8 @@ class App extends React.Component {
       render: (text, record) => (
         <span>
           <Badge status="processing" text="未申请"/>
-          <Badge status="processing" text="待审批"/>
-          <Badge status="processing" text="可阅读"/>
+          {/*<Badge status="processing" text="待审批"/>*/}
+          {/*<Badge status="processing" text="可阅读"/>*/}
        </span>
       ),
     },
@@ -71,9 +77,9 @@ class App extends React.Component {
       key: 'action',
       render: (text, record) => (
         <span>
-           {/*<a onClick={this.onDesignerProcess.bind(this, record)}>申请</a>*/}
-           {/*<a onClick={this.onDesignerProcess.bind(this, record)}>查看</a>*/}
-           {/*<a onClick={this.onDesignerProcess.bind(this, record)}>评论</a>*/}
+           <a onClick={this.onClickShow.bind(this, record)}>申请</a>
+          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>查看</a>*/}
+          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>评论</a>*/}
        </span>
       ),
     },
@@ -85,18 +91,36 @@ class App extends React.Component {
   getMainData = (payload = {}) => {
     this.setState({loading: true});
     const searchObj = this.childSearch.getSearchValue();
-    const { pageNumber, pageSize } = this.props.activitiManagerModel.docData;
-
+    const {pageNumber, pageSize} = this.props.activitiManagerModel.docData;
     // 获取分页数,分页数量
     this.props.dispatch({
       type: 'activitiManagerModel/getDocData',
-      payload: { pageNumber, pageSize, ...searchObj, ...payload },
+      payload: {pageNumber, pageSize, ...searchObj, ...payload},
       callback: (data) => {
         let stateTemp = {loading: false};
         this.setState(stateTemp);
       },
     });
   };
+
+
+  // onApply
+  onApply = (payload = {}) => {
+    this.setState({loading: true});
+    const {basicData}=this.state;
+    payload.docId=basicData.id;
+    payload.departmentId=this.departmentId;
+
+    this.props.dispatch({
+      type: 'activitiManagerModel/addAuth',
+      payload,
+      callback: (data) => {
+        if (checkError(data)) {
+          this.getData();
+        }
+      },
+    });
+  }
 
   // 搜索面板值
   onSearchPanel = (param) => {
@@ -121,9 +145,17 @@ class App extends React.Component {
     this.getMainData({departmentId: id});
   };
 
+  onClickClose = () => {
+    this.setState({visible: false});
+  }
+
+  onClickShow = (basicData) => {
+    this.setState({visible: true, basicData});
+  }
+
 
   render() {
-    const {loading,} = this.state;
+    const {loading, basicData} = this.state;
     const {docData} = this.props.activitiManagerModel;
 
     const {pageNumber, total, pageSize, rows} = docData;
@@ -184,6 +216,14 @@ class App extends React.Component {
 
             </div>
           </div>
+          <ActionModal
+            visible={visible}
+            onSave={this.onApply}
+            status={status}
+            onClose={this.onClickClose}
+            basicData={basicData}
+          />
+
         </Spin>
       </div>
     );

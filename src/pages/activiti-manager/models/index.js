@@ -42,6 +42,17 @@ export default {
       }
     },
 
+
+
+    // 添加
+    * addAuth({payload, callback}, {call, put, select}) {
+      const data = yield call(services.addAuth, payload);
+      if (callback) {
+        callback(data);
+      }
+    },
+
+
   },
 
 

@@ -26,7 +26,6 @@ class App extends React.Component {
     this.getData();
   }
 
-
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
@@ -133,8 +132,6 @@ class App extends React.Component {
               total,
               pageSize: pageSize,
             }}
-
-            // loading={loading}
             onChange={this.onChangePage}
           />
         </Spin>
