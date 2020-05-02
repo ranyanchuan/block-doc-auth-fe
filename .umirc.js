@@ -1,9 +1,5 @@
 import {resolve} from 'path';
 
-// const path = require('path');
-// ref: https://umijs.org/config/
-// https://blog.csdn.net/SCU_Cindy/article/details/82914547 路由配置
-
 export default {
 
   routes: [
@@ -23,7 +19,6 @@ export default {
 
 
   plugins: [
-    // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
       default: 'zh-CN',
       antd: true,
@@ -31,23 +26,14 @@ export default {
         immer: true,
       },
       dynamicImport: false,
-      title: '区块链',
+      title: '区块链文档预览',
       dll: false,
 
       // routes: {
       //   exclude: [],
       // },
-
-
       hardSource: false,
-      // 添加全局css
-      links: [
-        // { rel: 'stylesheet', href: "http://at.alicdn.com/t/font_1092043_zapf4yqi50q.css" },
-        // { rel: 'stylesheet', href: "http://at.alicdn.com/t/font_1092043_zapf4yqi50q.css" },
-        // { rel: 'stylesheet', href: "https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" },
-      ],
     }],
-    // ['./baidu-map-plugin.js'],
   ],
 
 
@@ -62,10 +48,7 @@ export default {
   proxy: {
     '/api': {
       target: 'http://127.0.0.1:8080',
-      // target: 'http://192.168.43.30:8888/',
-      // target: 'http://192.144.173.229:27000/',
       changeOrigin: true,
-      // pathRewrite: { "^/api" : ""}
     },
 
   },

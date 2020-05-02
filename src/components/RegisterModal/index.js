@@ -3,6 +3,7 @@ import {Form, Button, Spin, Modal, Row, Col} from 'antd';
 import {connect} from 'dva';
 import {checkError} from 'utils';
 import ConPassword from 'components/ConPassword';
+import ConInputTreeSelectPromise from 'components/ConInputTreeSelectPromise';
 import ConAutoEmail from 'components/ConAutoEmail';
 import ConInput from 'components/ConInput';
 
@@ -20,7 +21,6 @@ class Index extends React.Component {
     loading: false,
   };
 
-
   hideModal = (status) => {
     if (status) {
       this.props.onCancel();
@@ -34,7 +34,9 @@ class Index extends React.Component {
   handleSubmit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({ loading:false});
+        const {id} = this.childTreeSelect.getKeyValue();
+        values.departmentId = id;
+        this.setState({loading: false});
         this.props.onSave(values, this.hideModal);
       }
     });
@@ -65,14 +67,29 @@ class Index extends React.Component {
             <Form onSubmit={this.handleSubmit}>
               <Row>
 
-                  <ConInput
-                    form={form}
-                    id="name"
-                    label="用户名"
-                    placeholder="请输入用户名"
-                    message="请输入用户名"
-                    required={true}
-                  />
+                <ConInputTreeSelectPromise
+                  isAsync={false}
+                  form={form}
+                  treeOptionId='id'
+                  treeOptionTitle='title'
+                  isLoadingData={visible}
+                  id="departmentId"
+                  label="部门"
+                  url={`/api/department/select`}
+                  placeholder={'请选择部门'}
+                  message={'请选择部门'}
+                  required={true}
+                  onRef={ref => this.childTreeSelect = ref}
+                />
+
+                <ConInput
+                  form={form}
+                  id="name"
+                  label="用户名"
+                  placeholder="请输入用户名"
+                  message="请输入用户名"
+                  required={true}
+                />
 
                 <Col span={24}>
                   <ConAutoEmail
@@ -86,29 +103,29 @@ class Index extends React.Component {
                 </Col>
 
                 {/*<Col span={24}>*/}
-                  <ConPassword
-                    form={form}
-                    id="password"
-                    label="设置密码"
-                    placeholder="请输入设置密码"
-                    message="请输入设置密码"
-                    required={true}
-                    validator={this.handleCheckPwd}
-                    validateFirst={true}
-                  />
+                <ConPassword
+                  form={form}
+                  id="password"
+                  label="设置密码"
+                  placeholder="请输入设置密码"
+                  message="请输入设置密码"
+                  required={true}
+                  validator={this.handleCheckPwd}
+                  validateFirst={true}
+                />
                 {/*</Col>*/}
 
                 {/*<Col span={24}>*/}
-                  <ConPassword
-                    form={form}
-                    id="okPass"
-                    label="确认密码"
-                    placeholder="请输入确认密码"
-                    message="请输入确认密码"
-                    required={true}
-                    validator={this.handleCfmPwd}
-                    validateFirst={true}
-                  />
+                <ConPassword
+                  form={form}
+                  id="okPass"
+                  label="确认密码"
+                  placeholder="请输入确认密码"
+                  message="请输入确认密码"
+                  required={true}
+                  validator={this.handleCfmPwd}
+                  validateFirst={true}
+                />
                 {/*</Col>*/}
 
                 <Form.Item>
