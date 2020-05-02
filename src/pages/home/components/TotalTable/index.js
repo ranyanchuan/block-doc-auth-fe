@@ -23,7 +23,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const userId = localStorage.getItem("userId");
     this.getData();
   }
 
@@ -106,8 +105,8 @@ class App extends React.Component {
   render() {
     const {loading} = this.state;
 
-    const {taskData} = this.props.homeModel;
-    const {pageNumber, total, pageSize, rows} = taskData;
+    const {totalData} = this.props.homeModel;
+    const {pageNumber, total, pageSize, rows} = totalData;
     return (
       <div>
         <Spin spinning={loading}>

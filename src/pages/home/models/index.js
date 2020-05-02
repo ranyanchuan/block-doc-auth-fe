@@ -1,24 +1,37 @@
 import * as services from '../services';
 
+
+const initTable={
+  rows: [],
+  pageNumber: 1,
+  total: 0,
+  pageSize: 20,
+}
+
 export default {
   namespace: 'homeModel',
 
   state: {
 
     taskData: {
-      rows: [],
-      pageNumber: 1,
-      total: 0,
-      pageSize: 20,
-
+      ...initTable,
+    },
+    totalData: {
+      ...initTable,
     },
 
-    docData: {
-      rows: [],
-      pageNumber: 1,
-      total: 0,
-      pageSize: 20,
+    readData: {
+      ...initTable,
+    },
 
+    commentData: {
+      ...initTable,
+    },
+    approvalData: {
+      ...initTable,
+    },
+    docData: {
+      ...initTable,
     },
   },
 
@@ -38,7 +51,7 @@ export default {
 
     //  获取区块数据
     * getBlockData({payload, callback}, {call, put, select}) {
-      const {type} = payload;
+      const {type="total"} = payload;
       const {data} = yield call(services.getBlock, payload);
       if (data) {
         yield put({type: 'updateState', res: {[`${type}Data`]: data}});

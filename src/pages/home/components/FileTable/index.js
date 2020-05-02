@@ -66,23 +66,23 @@ class App extends React.Component {
         return text ? moment(text).format(ruleDate) : '';
       },
     },
-    {
-      title: '操作',
-      dataIndex: 'action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-           <a onClick={this.showDelCon.bind(this, record)}>删除</a>
-       </span>
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'action',
+    //   key: 'action',
+    //   render: (text, record) => (
+    //     <span>
+    //        <a onClick={this.showDelCon.bind(this, record)}>删除</a>
+    //    </span>
+    //   ),
+    // },
   ];
 
 
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
-    payload.type = "file";
+    // payload.type = "file";
     const _this = this;
     this.props.dispatch({
       type: 'homeModel/getDocData',
@@ -114,8 +114,6 @@ class App extends React.Component {
 
   //删除表格数据
   delDoc = (payload) => {
-
-    debugger
     const {id} = delMore(payload);
     this.props.dispatch({
       type: 'homeModel/delDoc',
@@ -142,7 +140,6 @@ class App extends React.Component {
     this.getData({...getPageParam(data), ...searchObj});
   };
 
-
   onClickAddShow = () => {
     this.setState({visible: true, status: 'add'});
   }
@@ -154,7 +151,6 @@ class App extends React.Component {
   // 删除弹框确认
   showDelCon = (payload) => {
     const _this = this;
-    debugger
     confirm({
       title: '您确定要删除吗',
       content: '',
