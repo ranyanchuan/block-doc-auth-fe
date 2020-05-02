@@ -105,19 +105,20 @@ class App extends React.Component {
 
 
   // onApply
-  onApply = (payload = {}) => {
+  onApply = (payload = {},callback) => {
     this.setState({loading: true});
     const {basicData} = this.state;
     payload.docId = basicData.id;
-    payload.departmentId = basicData.departmentId;
-
     this.props.dispatch({
       type: 'activitiManagerModel/addAuth',
       payload,
       callback: (data) => {
+        let temp = false;
         if (checkError(data)) {
+          temp = true;
           this.getData();
         }
+        callback(temp);
       },
     });
   }

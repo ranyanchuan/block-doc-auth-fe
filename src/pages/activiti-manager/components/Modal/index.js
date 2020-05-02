@@ -81,7 +81,7 @@ class ActionModal extends React.Component {
                   form={form}
 
                   id="eTime"
-                  label="结束"
+                  label="结束时间"
                   placeholder="请选择结束时间"
                   message='请选择结束时间'
                   required={true}
