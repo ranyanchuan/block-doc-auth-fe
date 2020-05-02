@@ -36,11 +36,12 @@ class ProductApp extends React.Component {
 
   onChangeTab = (value) => {
     console.log("value", value)
+    this.setState({activeKey: value});
   }
 
 
   render() {
-    const {activeKey, visible, loading} = this.state;
+    const {activeKey, loading} = this.state;
     return (
       <div className={styles.home}>
         <Spin spinning={loading}>

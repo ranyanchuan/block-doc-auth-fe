@@ -1,16 +1,17 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin, Divider} from 'antd';
+import {Table, Spin, Modal} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
-import router from "umi/router";
 import ConRadioGroup from "components/ConRadioGroup";
 
 import Search from '../TSearch';
+import FileModal from '../FileModal';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
 
+const confirm = Modal.confirm;
 
 @connect((state) => ({
   homeModel: state.homeModel,
@@ -20,16 +21,55 @@ class App extends React.Component {
 
   state = {
     loading: false,
+    visible: false,
+    status: 'add',
   };
 
   componentDidMount() {
     this.getData();
   }
 
+
+  columns = [
+    {
+      title: '序号',
+      dataIndex: 'order',
+      key: 'order',
+      render: (text, record, index) => {
+        return index + 1;
+      },
+    },
+    {
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',
+    },
+
+    {
+      title: '摘要',
+      dataIndex: 'abs',
+      key: 'abs'
+    },
+    {
+      title: '路径',
+      dataIndex: 'fileUrl',
+      key: 'fileUrl',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (text) => {
+        return text ? moment(text).format(ruleDate) : '';
+      },
+    },
+  ];
+
+
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
-    payload.type="file";
+    payload.type = "file";
     const _this = this;
     this.props.dispatch({
       type: 'homeModel/getBlockData',
@@ -44,6 +84,7 @@ class App extends React.Component {
 
   //添加表格数据
   addData = (payload, callback) => {
+    payload.type = "file";
     this.props.dispatch({
       type: 'homeModel/addDoc',
       payload,
@@ -89,55 +130,36 @@ class App extends React.Component {
   };
 
 
-  columns = [
-    {
-      title: '序号',
-      dataIndex: 'order',
-      key: 'order',
-      render: (text, record, index) => {
-        return index + 1;
-      },
-    },
-    {
-      title: '用户',
-      dataIndex: 'userName',
-      key: 'userName',
-    },
-    {
-      title: '部门',
-      dataIndex: 'departmentTitle',
-      key: 'departmentTitle',
-    },
+  onClickAddShow = () => {
+    this.setState({visible: true, status: 'add'});
+  }
 
-    {
-      title: '文件名称',
-      dataIndex: 'docTitle',
-      key: 'docTitle'
-    },
+  onClickClose = () => {
+    this.setState({visible: false, status: 'add'});
+  }
 
-    {
-      title: '开始时间',
-      dataIndex: 'sTime',
-      key: 'sTime'
-    },
-    {
-      title: '到期时间',
-      dataIndex: 'eTime',
-      key: 'eTime'
-    },
-    {
-      title: '申请时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      render: (text) => {
-        return text ? moment(text).format(ruleDate) : '';
+  // 删除弹框确认
+  showDelCon = (payload) => {
+    const _this = this;
+    confirm({
+      title: '您确定要删除吗',
+      content: '',
+      okText: '是',
+      okType: 'danger',
+      cancelText: '否',
+      onOk() {
+        // 删除数据
+        _this.delMainData(payload);
       },
-    },
-  ];
+      onCancel() {
+        console.log('取消删除');
+      },
+    });
+  };
 
 
   render() {
-    const {loading} = this.state;
+    const {loading, visible, status} = this.state;
 
     const {taskData} = this.props.homeModel;
     const {pageNumber, total, pageSize, rows} = taskData;
@@ -149,6 +171,22 @@ class App extends React.Component {
             onSearch={this.onSearchPanel}
             onRef={(value) => this.child = value}
           />
+
+          <ConRadioGroup
+            defaultValue={'add'}
+            onClickAdd={this.onClickAddShow}
+            onClickDel={this.showDelCon}
+          />
+
+          {/*添加表单*/}
+          <FileModal
+            visible={visible}
+            onSave={this.addData}
+            status={status}
+            onClose={this.onClickClose}
+            basicData={{}}
+          />
+
 
           <Table
             className={styles.table}
