@@ -46,64 +46,35 @@ class App extends React.Component {
         return index + 1;
       },
     },
-    // {
-    //   title: '部署ID',
-    //   dataIndex: 'id',
-    //   key: 'id',
-    // },
     {
-      title: '流程定义ID',
-      dataIndex: 'processDefinitionId',
-      key: 'processDefinitionId',  //   流程定义key+流程定义version+部署ID
-    },
-
-    {
-      title: '部署名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',  //   流程定义key+流程定义version+部署ID
     },
     {
-      title: '流程名称',
-      dataIndex: 'processDefinitionName',
-      key: 'processDefinitionName',
-    },
-
-    {
-      title: '流程KEY',
-      dataIndex: 'key',
-      key: 'key',
+      title: '摘要',
+      dataIndex: 'abs',
+      key: 'abs',
     },
     {
-      title: '流程版本',
-      dataIndex: 'version',
-      key: 'version',
-      align: 'right',
-    },
-
-    {
-      title: '资源名称[bpmn]',
-      dataIndex: 'resourceName',
-      key: 'resourceName',
+      title: '创建时间',
+      dataIndex: 'createTime',
+      key: 'createTime',
     },
     {
-      title: '资源名称[svg]',
-      dataIndex: 'diagramResourceName',
-      key: 'diagramResourceName',
+      title: '到期时间',
+      dataIndex: 'eTime',
+      key: 'eTime',
     },
     {
-      title: '部署时间',
-      dataIndex: 'deploymentTime',
-      key: 'deploymentTime',
-    },
-    {
-      title: '流程状态',
+      title: '状态',
       dataIndex: 'state',
       key: 'state',
       render: (text, record) => (
         <span>
-         {/*<Badge status="success" text="启用" />*/}
-          {/*<Badge status="error" text="停用" />*/}
-          <Badge status="processing" text="未发布"/>
+          <Badge status="processing" text="未申请"/>
+          <Badge status="processing" text="待审批"/>
+          <Badge status="processing" text="可阅读"/>
        </span>
       ),
     },
@@ -114,7 +85,9 @@ class App extends React.Component {
       key: 'action',
       render: (text, record) => (
         <span>
-           <a onClick={this.onDesignerProcess.bind(this, record)}>设计</a>
+           <a onClick={this.onDesignerProcess.bind(this, record)}>申请</a>
+           <a onClick={this.onDesignerProcess.bind(this, record)}>查看</a>
+           <a onClick={this.onDesignerProcess.bind(this, record)}>评论</a>
        </span>
       ),
     },
@@ -167,7 +140,6 @@ class App extends React.Component {
       },
     });
   };
-
 
   // 获取流程图片
   getProcessImg = (payload = {}) => {
@@ -259,6 +231,7 @@ class App extends React.Component {
   render() {
     const { loading, visible, status, modalDataObj, processImg, dVisible } = this.state;
     const { mainData } = this.props.activitiManagerModel;
+
     const { pageNumber, total, pageSize, rows } = mainData;
 
     // 流程状态: 未发布、启用、停用
@@ -277,9 +250,9 @@ class App extends React.Component {
           <div className="tree-card">
             <div className="left-tree">
               <ConTreeNode
-                url='/admin/shangpinfenlei/getByPid'
+                url='/api/department/select'
                 treeTitle='title'
-                treeId='key'
+                treeId='id'
                 // onRef={ref => this.cTree = ref}
                 onSelect={this.onSelectTree}
                 onLoading={this.onLoading}

@@ -1,73 +1,29 @@
 import React from 'react';
-import { Tree } from 'antd';
-import { requestJson } from 'utils/request';
+import {Tree} from 'antd';
+import {requestJson} from 'utils/request';
 
-const { TreeNode } = Tree;
-
-const treeData = [
-  {
-    title: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      },
-      {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      },
-      {
-        title: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: '0-1',
-    key: '0-1',
-    children: [
-      { title: '0-1-0-0', key: '0-1-0-0' },
-      { title: '0-1-0-1', key: '0-1-0-1' },
-      { title: '0-1-0-2', key: '0-1-0-2' },
-    ],
-  },
-  {
-    title: '0-2',
-    key: '0-2',
-  },
-];
+const {TreeNode} = Tree;
 
 class ConTreeNode extends React.Component {
   state = {
-    selectedKeys: ['0-0-0-0'],
-    treeData: treeData,
+    selectedKeys: ['2'],
+    treeData: [],
   };
 
   async componentDidMount() {
 
-    const { onRef, treeId, onSelect } = this.props;
-    this.setState({ loading: true });
-    let { data = [] } = await this.treeService();
-    let temp = { loading: false };
+    const {onRef, treeId, onSelect} = this.props;
+    this.setState({loading: true});
+    let {data = []} = await this.treeService();
+    let temp = {loading: false};
 
-    // let treeData = Array.isArray(data) ? data : data.rows;
+    let treeData = Array.isArray(data) ? data : data.rows;
 
     temp.treeData = treeData;
     if (treeData.length > 0) {
       // temp.selectedKeys = [treeData[0][treeId]];
       // todo 获取第一个叶子节点
-      temp.selectedKeys = ["0-0-0-0"];
+      temp.selectedKeys = ["2"];
     }
     if (onSelect) { // 选中事件
       this.props.onSelect([treeData[0]]);
@@ -83,13 +39,12 @@ class ConTreeNode extends React.Component {
   getFirstChildNode = (data) => {
 
 
-
   };
 
 
   // 获取
   treeService = async () => {
-    const { url, payload } = this.props;
+    const {url, payload = {}} = this.props;
     this.isLoading(true);
     const result = await requestJson(url, {
       method: 'POST',
@@ -101,7 +56,7 @@ class ConTreeNode extends React.Component {
 
   // 返回loading 效果
   isLoading = (loading) => {
-    const { onLoading } = this.props;
+    const {onLoading} = this.props;
     if (onLoading) {
       onLoading(loading);
     }
@@ -118,16 +73,16 @@ class ConTreeNode extends React.Component {
 
   // 多选框选中
   onCheck = checkedKeys => {
-    this.setState({ checkedKeys });
+    this.setState({checkedKeys});
   };
 
   // 节点选中
   onSelect = (selectedKeys, param) => {
     if (selectedKeys.length > 0) { // 第二次点击不让取消
-      this.setState({ selectedKeys });
-      const { onSelect } = this.props;
+      this.setState({selectedKeys});
+      const {onSelect} = this.props;
       if (onSelect) {
-        const { selectedNodes } = param;
+        const {selectedNodes} = param;
         let selectResult = selectedNodes.map((item) => {
           return item.props ? item.props.dataRef : {};
         });
@@ -144,7 +99,7 @@ class ConTreeNode extends React.Component {
       isParentDisabled = false, // 禁止选中父节点
     } = this.props;
     return data.map(item => {
-      if (item.children) {
+      if (item.children && item.children.length > 0) {
         return (
           <TreeNode title={item[treeTitle]} key={item[treeId]} dataRef={item} disabled={isParentDisabled}>
             {this.renderTreeNodes(item.children)}
@@ -157,17 +112,23 @@ class ConTreeNode extends React.Component {
 
   render() {
 
-    const {selectedKeys, treeData } = this.state;
+    const {selectedKeys, treeData} = this.state;
 
     return (
-      <Tree
-        {...this.props}
-        onSelect={this.onSelect}
-        selectedKeys={selectedKeys}
-        defaultExpandAll={true}
-      >
-        {this.renderTreeNodes(treeData)}
-      </Tree>
+
+      <span>
+
+        {treeData && treeData.length > 0 &&
+          <Tree
+            {...this.props}
+            onSelect={this.onSelect}
+            selectedKeys={selectedKeys}
+            defaultExpandAll={true}
+          >
+            {this.renderTreeNodes(treeData)}
+          </Tree>
+        }
+        </span>
     );
   }
 }

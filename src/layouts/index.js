@@ -192,7 +192,7 @@ class BasicLayout extends React.Component {
                     首页
                   </Menu.Item>
                   <Menu.Item key='/home' style={{marginLeft: 10}}>
-                    用户信息
+                    管理
                   </Menu.Item>
                 </Menu>
               </div>

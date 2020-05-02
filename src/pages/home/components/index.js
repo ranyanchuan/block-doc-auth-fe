@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin} from 'antd';
+import {Table, Spin, Divider} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import ActionModal from './Modal';
 import moment from 'moment';
@@ -91,7 +91,6 @@ class ProductApp extends React.Component {
     this.setState({visible: false, status: 'add'});
   };
 
-
   columns = [
     {
       title: '序号',
@@ -156,6 +155,44 @@ class ProductApp extends React.Component {
     return (
       <div className={styles.home}>
         <Spin spinning={loading}>
+
+          {/*小部件*/}
+
+          <div className={styles.part}>
+
+            <div>
+              <div className={styles.pTitle}>我的待办</div>
+              <p>8个任务</p>
+
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <div className={styles.pTitle}>文件管理</div>
+              <p>8个任务</p>
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <div className={styles.pTitle}>总区块</div>
+              <p>8个任务</p>
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <div className={styles.pTitle}>审批区块</div>
+              <p>8个任务</p>
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <div className={styles.pTitle}>阅读区块</div>
+              <p>8个任务</p>
+            </div>
+            <div className={styles.line}></div>
+            <div>
+              <div className={styles.pTitle}>评论区块</div>
+              <p>8个任务</p>
+            </div>
+
+          </div>
+
 
           <Search
             onSearch={this.onSearchPannel}

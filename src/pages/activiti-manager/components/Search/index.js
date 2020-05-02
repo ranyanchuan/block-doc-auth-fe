@@ -64,9 +64,9 @@ class Search extends React.Component {
               <ConInput
                 form={form}
                 formItemLayout={formItemLayout}
-                id="hash"
-                label="部署名称"
-                placeholder="部署名称"
+                id="title"
+                label="名称"
+                placeholder="名称"
               />
             </Col>
             <Col xs={6} sm={6} md={6} lg={4} xl={4} className="search-footer">
