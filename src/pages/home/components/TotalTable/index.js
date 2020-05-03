@@ -3,10 +3,8 @@ import {connect} from 'dva';
 import {Table, Spin, Divider} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
-import router from "umi/router";
-import ConRadioGroup from "components/ConRadioGroup";
 
-import Search from '../TSearch';
+import Search from '../TotalSearch';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
@@ -62,17 +60,20 @@ class App extends React.Component {
       render: (text, record, index) => {
         return index + 1;
       },
+      // width:50
     },
     {
       title: '存证人',
       dataIndex: 'userName',
       key: 'userName',
+      // width:60
     },
 
     {
       title: '类型',
       dataIndex: 'category',
-      key: 'category'
+      key: 'category',
+      // width:100
     },
 
     {
@@ -82,12 +83,14 @@ class App extends React.Component {
       render: (text) => {
         return text ? moment(text).format(ruleDate) : '';
       },
+      // width:200
     },
 
     {
       title: '区块高度',
       dataIndex: 'height',
       key: 'height',
+      // width:80
     },
     {
       title: '存证哈希值',
@@ -132,6 +135,7 @@ class App extends React.Component {
               total,
               pageSize: pageSize,
             }}
+            scroll={{x: 'max-content'}}
             onChange={this.onChangePage}
           />
         </Spin>
