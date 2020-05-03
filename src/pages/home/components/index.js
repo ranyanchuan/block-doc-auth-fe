@@ -179,28 +179,28 @@ class ProductApp extends React.Component {
 
 
             {activeKey == '1' &&
-            <TaskTable/>
+            <TaskTable activeKey={activeKey}/>
             }
 
             {activeKey == '2' &&
-            <FileTable/>
+            <FileTable activeKey={activeKey}/>
             }
 
 
             {activeKey == '3' &&
-            <TotalTable/>
+            <TotalTable activeKey={activeKey}/>
             }
 
             {activeKey == '4' &&
-            <ApprovalTable/>
+            <ApprovalTable activeKey={activeKey}/>
             }
 
             {activeKey == '5' &&
-            <ReadTable/>
+            <ReadTable activeKey={activeKey}/>
             }
 
             {activeKey == '6' &&
-            <CommentTable/>
+            <CommentTable activeKey={activeKey}/>
             }
 
           </div>

@@ -22,6 +22,7 @@ export default {
       ...initTable,
     },
 
+
     readData: {
       ...initTable,
     },

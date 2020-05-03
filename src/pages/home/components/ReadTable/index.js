@@ -23,6 +23,13 @@ class App extends React.Component {
   componentDidMount() {
     this.getData();
   }
+  // componentWillReceiveProps(nextProps) {
+  //   const {activeKey} = nextProps;
+  //   if (activeKey !== this.props.activeKey && activeKey === '5') {
+  //     this.getData();
+  //   }
+  // }
+
 
   // 获取数据
   getData = (payload = {}) => {
@@ -105,8 +112,8 @@ class App extends React.Component {
   render() {
     const {loading} = this.state;
 
-    const {taskData} = this.props.homeModel;
-    const {pageNumber, total, pageSize, rows} = taskData;
+    const {readData} = this.props.homeModel;
+    const {pageNumber, total, pageSize, rows} = readData;
     return (
       <div>
         <Spin spinning={loading}>
@@ -132,6 +139,7 @@ class App extends React.Component {
               pageSize: pageSize,
             }}
 
+            scroll={{x: 'max-content'}}
             // loading={loading}
             onChange={this.onChangePage}
           />

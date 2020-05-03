@@ -242,7 +242,15 @@ class App extends React.Component {
   }
 
   onClickShow = (basicData) => {
+    const userId=localStorage.getItem("userId");
+    if(userId){
     this.setState({visible: true, basicData, status: 'add'});
+    }else{
+      Modal.warning({
+        title: '警告',
+        content: '请你先登录',
+      });
+    }
   }
 
 

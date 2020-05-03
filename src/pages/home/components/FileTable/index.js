@@ -10,6 +10,7 @@ import FileModal from '../FileModal';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
+import TaskTable from "../TaskTable";
 
 const confirm = Modal.confirm;
 
@@ -28,6 +29,14 @@ class App extends React.Component {
   componentDidMount() {
     this.getData();
   }
+
+
+  // componentWillReceiveProps(nextProps) {
+  //   const {activeKey} = nextProps;
+  //   if (activeKey !== this.props.activeKey && activeKey === '2') {
+  //     this.getData();
+  //   }
+  // }
 
 
   columns = [
@@ -232,6 +241,7 @@ class App extends React.Component {
               total,
               pageSize: pageSize,
             }}
+            scroll={{x: 'max-content'}}
 
             onChange={this.onChangePage}
           />

@@ -23,6 +23,14 @@ class App extends React.Component {
     this.getData();
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   const {activeKey} = nextProps;
+  //   if (activeKey !== this.props.activeKey && activeKey === '1') {
+  //     this.getData();
+  //   }
+  // }
+
+
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
@@ -182,6 +190,7 @@ class App extends React.Component {
             }}
 
             // loading={loading}
+            scroll={{x: 'max-content'}}
             onChange={this.onChangePage}
           />
         </Spin>

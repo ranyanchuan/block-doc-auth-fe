@@ -105,8 +105,8 @@ class App extends React.Component {
   render() {
     const {loading} = this.state;
 
-    const {taskData} = this.props.homeModel;
-    const {pageNumber, total, pageSize, rows} = taskData;
+    const {commentData} = this.props.homeModel;
+    const {pageNumber, total, pageSize, rows} = commentData;
     return (
       <div>
         <Spin spinning={loading}>
@@ -133,6 +133,7 @@ class App extends React.Component {
             }}
 
             // loading={loading}
+            scroll={{x: 'max-content'}}
             onChange={this.onChangePage}
           />
         </Spin>
