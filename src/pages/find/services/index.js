@@ -1,13 +1,25 @@
-import {requestJson} from 'utils/request';
+import { requestJson } from 'utils/request';
 
 const api = {
-  getBlock: '/api/block/select', // 查询区块
+  getDoc: '/api/doc/select', // 查看
+  addAuth: '/api/auth/insert/', // 提交申请
 };
 
-// 查询 区块
-export async function getBlock(payload) {
-  return requestJson(api.getBlock, {
+
+export async function getDoc(payload) {
+  return requestJson(api.getDoc, {
     method: 'POST',
-    payload
+    payload,
   });
 }
+
+
+
+export async function addAuth(payload) {
+  return requestJson(api.addAuth, {
+    method: 'POST',
+    payload,
+  });
+}
+
+

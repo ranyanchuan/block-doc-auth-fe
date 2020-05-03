@@ -1,62 +1,30 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Input, Table, Spin} from 'antd';
-import {checkError, checkEdit, getPageParam} from 'utils';
-import moment from 'moment';
 
-const ruleDate = 'YYYY-MM-DD HH:mm:ss';
+import {Badge, Modal, Table, Spin,} from 'antd';
+
+import ConTreeNode from 'components/ConTreeNode';
+import ActionModal from "./Modal";
+
+
+import Search from './Search';
+import {checkError, checkEdit, getPageParam, delMore} from 'utils';
 import styles from './index.less';
 
-
-const {Search} = Input;
-
 @connect((state) => ({
-  findModel: state.findModel,
+  activitiManagerModel: state.activitiManagerModel,
 }))
 
-class ProductApp extends React.Component {
+class App extends React.Component {
 
   state = {
     loading: false,
     visible: false,
-    status: 'add',
-    modalDataObj: {}, //  弹框数据
-    userName: '',
+    status: "add",
+    basic: {},
   };
 
-  componentDidMount() {
-    this.getBlockData();
-  }
-
-  // 获取数据
-  getBlockData = (payload = {}) => {
-    this.setState({loading: true});
-    const _this = this;
-    this.props.dispatch({
-      type: 'findModel/getData',
-      payload,
-      callback: (data) => {
-        let stateTemp = {loading: false};
-        _this.setState(stateTemp);
-      },
-    });
-  };
-
-
-  // 搜索面板值
-  onSearchPannel = (param) => {
-    this.getBlockData({userName: param});
-    this.setState({userName: param});
-  };
-
-  // 修改分页
-  onChangePage = (data) => {
-    const {userName} = this.state;
-    // 获取分页数据
-    this.getBlockData({...getPageParam(data), userName});
-  };
-
-
+  departmentId="";
   columns = [
     {
       title: '序号',
@@ -67,105 +35,200 @@ class ProductApp extends React.Component {
       },
     },
     {
-      title: '存证人',
-      dataIndex: 'userName',
-      key: 'userName',
+      title: '标题',
+      dataIndex: 'title',
+      key: 'title',  //   流程定义key+流程定义version+部署ID
     },
-
-    // {
-    //   title: '存证数量',
-    //   dataIndex: 'cunzhengshuliang',
-    //   key: 'cunzhengshuliang'
-    // },
-
     {
-      title: '存证类型',
-      dataIndex: 'category',
-      key: 'category'
+      title: '摘要',
+      dataIndex: 'abs',
+      key: 'abs',
     },
 
     {
-      title: '存证时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      render: (text) => {
-        return text ? moment(text).format(ruleDate) : '';
-      },
+      title: '开始时间',
+      dataIndex: 'sTime',
+      key: 'sTime',
     },
 
     {
-      title: '区块高度',
-      dataIndex: 'height',
-      key: 'height',
-    },
-    {
-      title: '存证哈希值',
-      dataIndex: 'hash',
-      key: 'hash',
+      title: '到期时间',
+      dataIndex: 'eTime',
+      key: 'eTime',
     },
 
     {
-      title: '文件',
-      dataIndex: 'fileUrl',
-      key: 'fileUrl',
-      render: (text) => {
-        return <a target="_blank" href={`http://127.0.0.1:8080/images/${text}`}>存证下载</a>
-      },
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state',
+      render: (text, record) => (
+        <span>
+          <Badge status="processing" text="未申请"/>
+          {/*<Badge status="processing" text="待审批"/>*/}
+          {/*<Badge status="processing" text="可阅读"/>*/}
+       </span>
+      ),
     },
+
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+           <a onClick={this.onClickShow.bind(this, record)}>申请</a>
+          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>查看</a>*/}
+          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>评论</a>*/}
+       </span>
+      ),
+    },
+
   ];
 
 
-  render() {
+  // 获取数据
+  getData = (payload = {}) => {
+    this.setState({loading: true});
+    const searchObj = this.childSearch.getSearchValue();
+    const {pageNumber, pageSize} = this.props.activitiManagerModel.docData;
+    const departmentId=this.departmentId;
+    // 获取分页数,分页数量
+    this.props.dispatch({
+      type: 'activitiManagerModel/getDocData',
+      payload: {pageNumber, pageSize, ...searchObj, ...payload,departmentId},
+      callback: (data) => {
+        let stateTemp = {loading: false};
+        this.setState(stateTemp);
+      },
+    });
+  };
 
-    const {loading} = this.state;
-    const {blockData} = this.props.findModel;
-    const {pageNumber, total, pageSize} = blockData;
+
+  // onApply
+  onApply = (payload = {},callback) => {
+    this.setState({loading: true});
+    const {basicData} = this.state;
+    payload.docId = basicData.id;
+    this.props.dispatch({
+      type: 'activitiManagerModel/addAuth',
+      payload,
+      callback: (data) => {
+        let temp = false;
+        if (checkError(data)) {
+          temp = true;
+          this.getData();
+        }
+        callback(temp);
+      },
+    });
+  }
+
+  // 搜索面板值
+  onSearchPanel = (param) => {
+    this.getData({...param});
+  };
+
+  // 修改分页
+  onChangePage = (data) => {
+    // 获取分页数据
+    this.getData({...getPageParam(data)});
+  };
+
+
+  onLoading = (loading) => {
+    this.setState({loading});
+  };
+
+  // 树节点点击
+  onSelectTree = (item) => {
+    const {id} = item[0];
+    this.departmentId=id;
+    this.getData({departmentId: id});
+  };
+
+  onClickClose = () => {
+    this.setState({visible: false});
+  }
+
+  onClickShow = (basicData) => {
+    this.setState({visible: true, basicData, status: 'add'});
+  }
+
+
+  render() {
+    const {loading, basicData, visible, status} = this.state;
+    const {docData} = this.props.activitiManagerModel;
+
+    const {pageNumber, total, pageSize, rows} = docData;
 
     return (
       <div>
         <Spin spinning={loading}>
-          <div className={styles.find}>
-            <div className={styles.content}>
-              <div className={styles.total}>
-                存证数量 『 {blockData.total} 』
-              </div>
 
-              <Search
-                placeholder="请输入存证人进行搜索"
-                // enterButton="查询"
-                size="large"
-                style={{width: '500px'}}
-                onSearch={this.onSearchPannel}
+          <div className="tree-card">
+            <div className="left-tree">
+              <ConTreeNode
+                url='/api/department/select'
+                treeTitle='title'
+                treeId='id'
+                // onRef={ref => this.cTree = ref}
+                onSelect={this.onSelectTree}
+                onLoading={this.onLoading}
+                showLine={true}
+                isParentDisabled={true}
+                defaultExpandAll={true}
               />
             </div>
-          </div>
+            <div className="right-card">
+              <Search
+                onSearch={this.onSearchPanel}
+                onRef={(value) => this.childSearch = value}
+              />
 
+              {/*<ConRadioGroup*/}
+              {/*defaultValue={'add'}*/}
+              {/*onClickAdd={this.onClickAddShow}*/}
+              {/*onClickDel={this.onClickDel}*/}
+              {/*onClickExport={this.onClickExport}*/}
+              {/*onClickSet={this.onClickAddShow}*/}
+              {/*onClickRefresh={this.onClickAddShow}*/}
+              {/*/>*/}
 
-          <div style={{
-            // background: '#f7f9fd'
-          }}>
-            <Table
-              className={styles.table}
-              rowKey={record => record.id.toString()}
-              columns={this.columns}
-              size="small"
-              dataSource={blockData.rows}
-              pagination={{
-                showSizeChanger: true,
-                defaultPageSize: pageSize,
-                pageSizeOptions: ['10', '20', '50', '100', '500'],
-                current: pageNumber+1,
-                total,
-                pageSize: pageSize,
-              }}
-              // loading={loading}
-              onChange={this.onChangePage}
-            />
+              {/*查看流程部署*/}
+              <Table
+                className={styles.table}
+                rowKey={record => record.id.toString()}
+                // rowSelection={rowSelection}
+                columns={this.columns}
+                size="small"
+                dataSource={rows}
+                pagination={{
+                  showSizeChanger: true,
+                  defaultPageSize: pageSize,
+                  pageSizeOptions: ['10', '20', '50', '100', '500'],
+                  current: pageNumber,
+                  total,
+                  pageSize: pageSize,
+                }}
+                scroll={{x: 'max-content'}}
+                // loading={loading}
+                onChange={this.onChangePage}
+              />
+
+            </div>
           </div>
+          <ActionModal
+            visible={visible}
+            onSave={this.onApply}
+            status={status}
+            onClose={this.onClickClose}
+            basicData={basicData}
+          />
+
         </Spin>
       </div>
     );
   }
 }
 
-export default ProductApp;
+export default App;

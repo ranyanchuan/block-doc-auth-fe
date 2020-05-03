@@ -1,22 +1,27 @@
 import * as services from '../services';
 
+
+const initTable = {
+  rows: [],
+  pageNumber: 0,
+  total: 0,
+  pageSize: 20,
+};
+
 export default {
-  namespace: 'findModel',
+  namespace: 'activitiManagerModel',
 
   state: {
 
-    blockData: {
-      rows: [],
-      pageNumber: 1,
-      total: 0,
-      pageSize: 20,
+    docData: {
+      ...initTable,
     },
   },
 
 
   reducers: {
 
-    updateState(state, {res}) { //更新state
+    updateState(state, { res }) { //更新state
       return {
         ...state,
         ...res,
@@ -27,16 +32,26 @@ export default {
 
   effects: {
 
-    //  分页查询
-    * getData({payload, callback}, {call, put, select}) {
-      const {data} = yield call(services.getBlock, payload);
+    * getDocData({payload, callback}, {call, put, select}) {
+      const {data} = yield call(services.getDoc, payload);
       if (data) {
-        yield put({type: 'updateState', res: {blockData: data}});
+        yield put({type: 'updateState', res: {docData: data}});
       }
       if (callback) {
         callback(data);
       }
     },
+
+
+
+    // 添加
+    * addAuth({payload, callback}, {call, put, select}) {
+      const data = yield call(services.addAuth, payload);
+      if (callback) {
+        callback(data);
+      }
+    },
+
 
   },
 

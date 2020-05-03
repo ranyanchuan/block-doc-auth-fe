@@ -10,7 +10,6 @@ export default {
         {path: '/', redirect: '/find'},
         {path: '/find', component: './find/components/'},
         {path: '/home', component: './home/components/'},
-        {path: '/activiti-manager', component: './activiti-manager/components/'},
         {path: '/404', component: './404'},
         {path: '/403', component: './403'},
         {path: '/500', component: './500'},
