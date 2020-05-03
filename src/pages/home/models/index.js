@@ -72,11 +72,8 @@ export default {
     },
 
 
-    * addApproval({payload, callback}, {call, put, select}) {
-      const {data} = yield call(services.addApproval, payload);
-      if (data) {
-        yield put({type: 'updateState', res: {taskData: data}});
-      }
+    * updAuth({payload, callback}, {call, put, select}) {
+      const data = yield call(services.updAuth, payload);
       if (callback) {
         callback(data);
       }

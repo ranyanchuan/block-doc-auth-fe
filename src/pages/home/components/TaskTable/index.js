@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin} from 'antd';
+import {Table, Spin, Badge, Divider} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
 import Search from '../TSearch';
@@ -27,6 +27,7 @@ class App extends React.Component {
   getData = (payload = {}) => {
     this.setState({loading: true});
     const _this = this;
+    payload.state = "待审批";
     this.props.dispatch({
       type: 'homeModel/getTaskData',
       payload,
@@ -38,22 +39,6 @@ class App extends React.Component {
   };
 
 
-  //添加表格数据
-  addData = (payload, callback) => {
-    this.props.dispatch({
-      type: 'homeModel/addApproval',
-      payload,
-      callback: (value) => {
-        let temp = false;
-        if (checkError(value)) {
-          temp = true;
-          this.getData();
-        }
-        callback(temp);
-      },
-    });
-  };
-
   // 搜索面板值
   onSearchPanel = (param) => {
     this.getData({...param});
@@ -62,10 +47,26 @@ class App extends React.Component {
 
   // 修改分页
   onChangePage = (data) => {
-    const searchObj = this.child.getSearchValue();
+    // const searchObj = this.child.getSearchValue();
     // 获取分页数据
-    this.getData({...getPageParam(data), ...searchObj});
+    // this.getData({...getPageParam(data), ...searchObj});
+    this.getData({...getPageParam(data)});
   };
+
+
+  onClickUpdAuth = (data, state) => {
+
+    this.props.dispatch({
+      type: 'homeModel/updAuth',
+      payload: {id: data.id, state},
+      callback: (value) => {
+        if (checkError(value)) {
+          this.getData();
+        }
+      },
+    });
+
+  }
 
 
   columns = [
@@ -93,7 +94,15 @@ class App extends React.Component {
       dataIndex: 'docTitle',
       key: 'docTitle'
     },
-
+    {
+      title: '文件摘要',
+      dataIndex: 'docAbs',
+      key: 'docAbs'
+    }, {
+      title: '备注',
+      dataIndex: 'note',
+      key: 'note'
+    },
     {
       title: '开始时间',
       dataIndex: 'sTime',
@@ -104,6 +113,18 @@ class App extends React.Component {
       dataIndex: 'eTime',
       key: 'eTime'
     },
+
+    {
+      title: '状态',
+      dataIndex: 'state',
+      key: 'state',
+      render: (text, record) => (
+        <span>
+          <Badge status="processing" text="待审批"/>
+       </span>
+      ),
+    },
+
     {
       title: '申请时间',
       dataIndex: 'createTime',
@@ -112,6 +133,21 @@ class App extends React.Component {
         return text ? moment(text).format(ruleDate) : '';
       },
     },
+
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+           <a onClick={this.onClickUpdAuth.bind(this, record,"同意")}>同意</a>
+           <Divider type="vertical"/>
+           <a onClick={this.onClickUpdAuth.bind(this, record,"驳回")}>驳回</a>
+       </span>
+      ),
+    },
+
+
   ];
 
 
@@ -124,10 +160,10 @@ class App extends React.Component {
       <div>
         <Spin spinning={loading}>
 
-          <Search
-            onSearch={this.onSearchPanel}
-            onRef={(value) => this.child = value}
-          />
+          {/*<Search*/}
+          {/*onSearch={this.onSearchPanel}*/}
+          {/*onRef={(value) => this.child = value}*/}
+          {/*/>*/}
 
           <Table
             className={styles.table}

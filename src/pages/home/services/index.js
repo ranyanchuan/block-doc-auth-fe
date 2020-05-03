@@ -2,7 +2,7 @@ import {requestJson} from 'utils/request';
 
 const api = {
   getAuth: '/api/auth/select/', // 查看
-  addApproval: '/api/auth/approval/', // 查看
+  updAuth: '/api/auth/update/', // 查看
   getBlock: '/api/block/select/', // 查看
   getDoc: '/api/doc/select', // 查看
   delDoc: '/api/doc/delete', // 查看
@@ -18,8 +18,8 @@ export async function getAuth(payload) {
 }
 
 // 添加
-export async function addApproval(payload) {
-  return requestJson(api.addApproval, {
+export async function updAuth(payload) {
+  return requestJson(api.updAuth, {
     method: 'POST',
     payload,
   });
