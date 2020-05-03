@@ -51,10 +51,10 @@ export default {
 
     //  获取区块数据
     * getBlockData({payload, callback}, {call, put, select}) {
-      const {type="total"} = payload;
+      const {category="total"} = payload;
       const {data} = yield call(services.getBlock, payload);
       if (data) {
-        yield put({type: 'updateState', res: {[`${type}Data`]: data}});
+        yield put({type: 'updateState', res: {[`${category}Data`]: data}});
       }
       if (callback) {
         callback(data);

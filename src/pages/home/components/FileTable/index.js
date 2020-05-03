@@ -82,7 +82,7 @@ class App extends React.Component {
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
-    // payload.type = "file";
+    // payload.category = "file";
     const _this = this;
     this.props.dispatch({
       type: 'homeModel/getDocData',

@@ -1,12 +1,10 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin, Divider} from 'antd';
+import {Table, Spin} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
-import router from "umi/router";
-import ConRadioGroup from "components/ConRadioGroup";
 
-import Search from '../TSearch';
+import Search from '../BSearch';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
@@ -30,7 +28,7 @@ class App extends React.Component {
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
-    payload.type="approval";
+    payload.category="approval";
     const _this = this;
     this.props.dispatch({
       type: 'homeModel/getBlockData',
@@ -109,8 +107,12 @@ class App extends React.Component {
   render() {
     const {loading} = this.state;
 
-    const {taskData} = this.props.homeModel;
-    const {pageNumber, total, pageSize, rows} = taskData;
+    const {approvalData} = this.props.homeModel;
+    const {pageNumber, total, pageSize, rows} = approvalData;
+
+    console.log("approvalData",approvalData);
+
+
     return (
       <div>
         <Spin spinning={loading}>
@@ -135,7 +137,7 @@ class App extends React.Component {
               total,
               pageSize: pageSize,
             }}
-
+            scroll={{x: 'max-content'}}
             // loading={loading}
             onChange={this.onChangePage}
           />

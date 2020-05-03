@@ -1,12 +1,10 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Table, Spin, Divider} from 'antd';
+import {Table, Spin} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import moment from 'moment';
-import router from "umi/router";
-import ConRadioGroup from "components/ConRadioGroup";
 
-import Search from '../TSearch';
+import Search from '../BSearch';
 
 const ruleDate = 'YYYY-MM-DD HH:mm:ss';
 import styles from './index.less';
@@ -29,7 +27,7 @@ class App extends React.Component {
   // 获取数据
   getData = (payload = {}) => {
     this.setState({loading: true});
-    payload.type = "read";
+    payload.category = "read";
     const _this = this;
     this.props.dispatch({
       type: 'homeModel/getBlockData',
