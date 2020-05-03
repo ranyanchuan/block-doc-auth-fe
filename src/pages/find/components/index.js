@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
 
-import {Badge, Modal, Table, Spin,} from 'antd';
+import {Badge, Modal, Table, Spin, Divider} from 'antd';
 
 import ConTreeNode from 'components/ConTreeNode';
 import ActionModal from "./Modal";
@@ -24,7 +24,7 @@ class App extends React.Component {
     basic: {},
   };
 
-  departmentId="";
+  departmentId = "";
   columns = [
     {
       title: '序号',
@@ -63,7 +63,7 @@ class App extends React.Component {
       key: 'state',
       render: (text, record) => (
         <span>
-          <Badge status="processing" text="未申请"/>
+          <Badge status="processing" text={text}/>
           {/*<Badge status="processing" text="待审批"/>*/}
           {/*<Badge status="processing" text="可阅读"/>*/}
        </span>
@@ -76,9 +76,22 @@ class App extends React.Component {
       key: 'action',
       render: (text, record) => (
         <span>
-           <a onClick={this.onClickShow.bind(this, record)}>申请</a>
-          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>查看</a>*/}
-          {/*<a onClick={this.onDesignerProcess.bind(this, record)}>评论</a>*/}
+          {record.state === "未申请" &&
+          <a onClick={this.onClickShow.bind(this, record)}>申请</a>
+          }
+
+          {record.state === "驳回" &&
+          <a onClick={this.onClickShow.bind(this, record)}>重新申请</a>
+          }
+
+          {record.state === "同意" &&
+          <span>
+            <a onClick={this.onClickShow.bind(this, record)}>查看</a>
+            <Divider type="vertical"/>
+            <a onClick={this.onClickShow.bind(this, record)}>评论</a>
+          </span>
+          }
+
        </span>
       ),
     },
@@ -91,11 +104,11 @@ class App extends React.Component {
     this.setState({loading: true});
     const searchObj = this.childSearch.getSearchValue();
     const {pageNumber, pageSize} = this.props.activitiManagerModel.docData;
-    const departmentId=this.departmentId;
+    const departmentId = this.departmentId;
     // 获取分页数,分页数量
     this.props.dispatch({
       type: 'activitiManagerModel/getDocData',
-      payload: {pageNumber, pageSize, ...searchObj, ...payload,departmentId},
+      payload: {pageNumber, pageSize, ...searchObj, ...payload, departmentId},
       callback: (data) => {
         let stateTemp = {loading: false};
         this.setState(stateTemp);
@@ -105,7 +118,7 @@ class App extends React.Component {
 
 
   // onApply
-  onApply = (payload = {},callback) => {
+  onApply = (payload = {}, callback) => {
     this.setState({loading: true});
     const {basicData} = this.state;
     payload.docId = basicData.id;
@@ -142,7 +155,7 @@ class App extends React.Component {
   // 树节点点击
   onSelectTree = (item) => {
     const {id} = item[0];
-    this.departmentId=id;
+    this.departmentId = id;
     this.getData({departmentId: id});
   };
 

@@ -3,8 +3,8 @@ import {requestJson} from 'utils/request';
 const api = {
   getAuth: '/api/auth/select/', // 查看
   updAuth: '/api/auth/update/', // 查看
-  getBlock: '/api/block/select/', // 查看
-  getDoc: '/api/doc/select', // 查看
+  getBlock: '/api/block/self/select/', // 查看
+  getDoc: '/api/doc/self/select', // 查看
   delDoc: '/api/doc/delete', // 查看
   addDoc: '/api/doc/insert', // 查看
   getDashboard: '/api/user/dashboard', // 查看
