@@ -1,7 +1,7 @@
 import * as services from '../services';
 
 
-const initTable={
+const initTable = {
   rows: [],
   pageNumber: 1,
   total: 0,
@@ -12,6 +12,8 @@ export default {
   namespace: 'homeModel',
 
   state: {
+
+    dashboardData: {},
 
     taskData: {
       ...initTable,
@@ -49,9 +51,20 @@ export default {
 
   effects: {
 
+    * getDashboardData({payload, callback}, {call, put, select}) {
+      const {data} = yield call(services.getDashboard, payload);
+      if (data) {
+        yield put({type: 'updateState', res: {dashboardData: data}});
+      }
+      if (callback) {
+        callback(data);
+      }
+    },
+
+
     //  获取区块数据
     * getBlockData({payload, callback}, {call, put, select}) {
-      const {category="total"} = payload;
+      const {category = "total"} = payload;
       const {data} = yield call(services.getBlock, payload);
       if (data) {
         yield put({type: 'updateState', res: {[`${category}Data`]: data}});
@@ -78,7 +91,6 @@ export default {
         callback(data);
       }
     },
-
 
 
     * getDocData({payload, callback}, {call, put, select}) {

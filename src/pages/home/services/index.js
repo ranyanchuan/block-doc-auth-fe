@@ -7,6 +7,7 @@ const api = {
   getDoc: '/api/doc/select', // 查看
   delDoc: '/api/doc/delete', // 查看
   addDoc: '/api/doc/insert', // 查看
+  getDashboard: '/api/user/dashboard', // 查看
 };
 
 // 查询
@@ -48,6 +49,12 @@ export async function delDoc(payload) {
 }
 export async function addDoc(payload) {
   return requestJson(api.addDoc, {
+    method: 'POST',
+    payload,
+  });
+}
+export async function getDashboard(payload) {
+  return requestJson(api.getDashboard, {
     method: 'POST',
     payload,
   });
