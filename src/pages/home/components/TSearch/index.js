@@ -70,7 +70,7 @@ class Search extends React.Component {
             </Col>
 
 
-            <Col xs={6} sm={6} md={6} lg={3} xl={3} className="search-footer">
+            <Col xs={6} sm={6} md={6} lg={4} xl={3} className="search-footer">
               <div>
                 <Button type="primary" htmlType="submit">查询</Button>
                 <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>清空</Button>

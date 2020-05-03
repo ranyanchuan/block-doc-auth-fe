@@ -1,8 +1,9 @@
 import React from 'react';
 
-import {Form, Row, Col, Button, } from 'antd';
+import {Form, Row, Col, Button,} from 'antd';
 import {formatFormDateRange} from 'utils';
 import ConSelect from 'components/ConSelect';
+import ConInput from 'components/ConInput';
 
 import styles from './index.less';
 
@@ -58,7 +59,7 @@ class Search extends React.Component {
         >
 
           <Row>
-            <Col xs={6} sm={4} md={4} lg={4} xl={4}>
+            <Col xs={6} sm={6} md={6} lg={6} xl={4}>
               <ConSelect
                 form={form}
                 formItemLayout={formItemLayout}
@@ -73,9 +74,17 @@ class Search extends React.Component {
                 ]}
               />
             </Col>
+            <Col xs={6} sm={6} md={6} lg={6} xl={4}>
+              <ConInput
+                form={form}
+                formItemLayout={formItemLayout}
+                id="data"
+                label="存档内容"
+                placeholder="存档内容"
+              />
+            </Col>
 
-
-            <Col xs={6} sm={6} md={6} lg={3} xl={3} className="search-footer">
+            <Col xs={6} sm={6} md={6} lg={4} xl={3} className="search-footer">
               <div>
                 <Button type="primary" htmlType="submit">查询</Button>
                 <Button style={{marginLeft: 8}} onClick={this.handleReset}>清空</Button>
