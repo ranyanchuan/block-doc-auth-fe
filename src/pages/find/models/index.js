@@ -52,9 +52,24 @@ export default {
       }
     },
 
- // 添加
+    // 添加
     * addComment({payload, callback}, {call, put, select}) {
       const data = yield call(services.addComment, payload);
+      if (callback) {
+        callback(data);
+      }
+    },
+    // 添加
+    * addView({payload, callback}, {call, put, select}) {
+      const data = yield call(services.addView, payload);
+      if (callback) {
+        callback(data);
+      }
+    },
+
+    // 添加
+    * reInsert({payload, callback}, {call, put, select}) {
+      const data = yield call(services.reInsert, payload);
       if (callback) {
         callback(data);
       }

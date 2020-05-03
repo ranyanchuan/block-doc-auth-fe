@@ -4,6 +4,7 @@ import {connect} from 'dva';
 import {Badge, Modal, Table, Spin, Divider} from 'antd';
 
 import ConTreeNode from 'components/ConTreeNode';
+import router from 'umi/router';
 import ActionModal from "./Modal";
 import CModal from "./CModal";
 
@@ -86,6 +87,7 @@ class App extends React.Component {
       dataIndex: 'action',
       key: 'action',
       render: (text, record) => (
+
         <span>
           {record.state === "未申请" &&
           <a onClick={this.onClickShow.bind(this, record)}>申请</a>
@@ -97,7 +99,8 @@ class App extends React.Component {
 
           {record.state === "同意" &&
           <span>
-            <a onClick={this.onClickShow.bind(this, record)}>查看</a>
+            <a onClick={this.onClickView.bind(this, record)} target="_blank" href={`http://127.0.0.1:8080/images/${record.fileUrl}`}>查看</a>
+            {/*<a ></a>*/}
             <Divider type="vertical"/>
             <a onClick={this.onClickComment.bind(this, record)}>评论</a>
           </span>
@@ -109,6 +112,18 @@ class App extends React.Component {
 
   ];
 
+
+  onClickView = (payload) => {
+    this.props.dispatch({
+      type: 'activitiManagerModel/addView',
+      payload,
+      callback: (data) => {
+        // if (checkError(data)) {
+        //   window.location.href = `http://127.0.0.1:8080/images/${payload.fileUrl}`;
+        // }
+      },
+    });
+  }
 
   // 获取数据
   getData = (payload = {}) => {
@@ -132,11 +147,36 @@ class App extends React.Component {
 
   // onApply
   onApply = (payload = {}, callback) => {
+
+    const {basicData} = this.state;
+    if (!basicData.userId) {
+      this.setState({loading: true});
+      payload.docId = basicData.id;
+      this.props.dispatch({
+        type: 'activitiManagerModel/addAuth',
+        payload,
+        callback: (data) => {
+          let temp = false;
+          if (checkError(data)) {
+            temp = true;
+            this.getData();
+          }
+          callback(temp);
+        },
+      });
+    } else {
+      this.reInsert(payload, callback);
+    }
+  }
+
+  //
+  reInsert = (payload = {}, callback) => {
     this.setState({loading: true});
     const {basicData} = this.state;
     payload.docId = basicData.id;
+    payload.userId = basicData.userId;
     this.props.dispatch({
-      type: 'activitiManagerModel/addAuth',
+      type: 'activitiManagerModel/reInsert',
       payload,
       callback: (data) => {
         let temp = false;
@@ -168,7 +208,6 @@ class App extends React.Component {
     });
   }
 
-
   //
   onClickComment = (data) => {
     this.setState({commentVisible: true, commentObj: data});
@@ -199,7 +238,7 @@ class App extends React.Component {
   };
 
   onClickClose = () => {
-    this.setState({visible: false,commentVisible:false});
+    this.setState({visible: false, commentVisible: false});
   }
 
   onClickShow = (basicData) => {
@@ -207,9 +246,8 @@ class App extends React.Component {
   }
 
 
-
   render() {
-    const {loading, basicData, visible, status,commentObj,commentVisible} = this.state;
+    const {loading, basicData, visible, status, commentObj, commentVisible} = this.state;
     const {docData} = this.props.activitiManagerModel;
 
     const {pageNumber, total, pageSize, rows} = docData;
