@@ -5,6 +5,7 @@ import {Badge, Modal, Table, Spin, Divider} from 'antd';
 
 import ConTreeNode from 'components/ConTreeNode';
 import ActionModal from "./Modal";
+import CModal from "./CModal";
 
 
 import Search from './Search';
@@ -20,6 +21,8 @@ class App extends React.Component {
   state = {
     loading: false,
     visible: false,
+    commentVisible: false,
+    commentObj: {},
     status: "add",
     basic: {},
   };
@@ -63,9 +66,17 @@ class App extends React.Component {
       key: 'state',
       render: (text, record) => (
         <span>
+          {text === "待审批" &&
           <Badge status="processing" text={text}/>
-          {/*<Badge status="processing" text="待审批"/>*/}
-          {/*<Badge status="processing" text="可阅读"/>*/}
+          }
+          {(text === "到期" || text === "未申请") &&
+          <Badge status="default" text={text}/>
+          }
+
+          {text === "同意" &&
+          <Badge status="success" text={"可阅读"}/>
+          }
+
        </span>
       ),
     },
@@ -88,7 +99,7 @@ class App extends React.Component {
           <span>
             <a onClick={this.onClickShow.bind(this, record)}>查看</a>
             <Divider type="vertical"/>
-            <a onClick={this.onClickShow.bind(this, record)}>评论</a>
+            <a onClick={this.onClickComment.bind(this, record)}>评论</a>
           </span>
           }
 
@@ -104,11 +115,13 @@ class App extends React.Component {
     this.setState({loading: true});
     const searchObj = this.childSearch.getSearchValue();
     const {pageNumber, pageSize} = this.props.activitiManagerModel.docData;
-    const departmentId = this.departmentId;
+    if (!payload.departmentId) {
+      payload.departmentId = this.departmentId;
+    }
     // 获取分页数,分页数量
     this.props.dispatch({
       type: 'activitiManagerModel/getDocData',
-      payload: {pageNumber, pageSize, ...searchObj, ...payload, departmentId},
+      payload: {pageNumber, pageSize, ...searchObj, ...payload},
       callback: (data) => {
         let stateTemp = {loading: false};
         this.setState(stateTemp);
@@ -136,6 +149,32 @@ class App extends React.Component {
     });
   }
 
+
+  onAddComment = (payload = {}, callback) => {
+    this.setState({loading: true});
+    const {commentObj} = this.state;
+    payload.docId = commentObj.id;
+    this.props.dispatch({
+      type: 'activitiManagerModel/addComment',
+      payload,
+      callback: (data) => {
+        let temp = false;
+        if (checkError(data)) {
+          temp = true;
+          this.getData();
+        }
+        callback(temp);
+      },
+    });
+  }
+
+
+  //
+  onClickComment = (data) => {
+    this.setState({commentVisible: true, commentObj: data});
+  }
+
+
   // 搜索面板值
   onSearchPanel = (param) => {
     this.getData({...param});
@@ -160,7 +199,7 @@ class App extends React.Component {
   };
 
   onClickClose = () => {
-    this.setState({visible: false});
+    this.setState({visible: false,commentVisible:false});
   }
 
   onClickShow = (basicData) => {
@@ -168,8 +207,9 @@ class App extends React.Component {
   }
 
 
+
   render() {
-    const {loading, basicData, visible, status} = this.state;
+    const {loading, basicData, visible, status,commentObj,commentVisible} = this.state;
     const {docData} = this.props.activitiManagerModel;
 
     const {pageNumber, total, pageSize, rows} = docData;
@@ -230,12 +270,21 @@ class App extends React.Component {
 
             </div>
           </div>
+          {/*申请弹框*/}
           <ActionModal
             visible={visible}
             onSave={this.onApply}
             status={status}
             onClose={this.onClickClose}
             basicData={basicData}
+          />
+          {/*评论弹框*/}
+          <CModal
+            visible={commentVisible}
+            onSave={this.onAddComment}
+            status={"add"}
+            onClose={this.onClickClose}
+            basicData={{}}
           />
 
         </Spin>

@@ -52,6 +52,14 @@ export default {
       }
     },
 
+ // 添加
+    * addComment({payload, callback}, {call, put, select}) {
+      const data = yield call(services.addComment, payload);
+      if (callback) {
+        callback(data);
+      }
+    },
+
 
   },
 

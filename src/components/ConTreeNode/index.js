@@ -25,7 +25,7 @@ class ConTreeNode extends React.Component {
       const selectedKeys = this.getFirstIsLeaf(data)[treeId];
       temp.selectedKeys = [selectedKeys];
       if (onSelect) { // 选中事件
-        this.props.onSelect([selectedKeys]);
+        this.props.onSelect([{id:selectedKeys}]);
       }
     }
 
