@@ -42,7 +42,9 @@ class BasicLayout extends React.Component {
   // 退出
   onLogout = () => {
     localStorage.clear();
+    window.onload;
     router.push('/find');
+
     // todo 走后端
     // this.props.dispatch({
     //   type: 'commonModel/logout',
@@ -67,10 +69,12 @@ class BasicLayout extends React.Component {
         const {info, code, data} = param;
         let status = false;
         if (code == '200') {
-          const {id, name, token} = data;
+          const {id, name, token,role,departmentId} = data;
           localStorage.setItem('userId', id);
           localStorage.setItem('userName', name);
           localStorage.setItem('token', token);
+          localStorage.setItem('role', role);
+          localStorage.setItem('departmentId', departmentId);
           status = true;
           this.getData();
         } else {
@@ -223,8 +227,8 @@ class BasicLayout extends React.Component {
                 {!userId &&
                 <div>
                   <span className={styles.rightMenu} onClick={this.onShowModal.bind(this, 'loginModalVis')}>登录</span>
-                  <Divider type="vertical"/>
-                  <span className={styles.rightMenu} onClick={this.onShowModal.bind(this, 'registerModalVis')}>注册</span>
+                  {/*<Divider type="vertical"/>*/}
+                  {/*<span className={styles.rightMenu} onClick={this.onShowModal.bind(this, 'registerModalVis')}>注册</span>*/}
                 </div>
                 }
               </div>
@@ -238,7 +242,7 @@ class BasicLayout extends React.Component {
               </div>
 
             </Content>
-            <Footer style={{textAlign: 'center'}}>北京信息科技大学 ©2020 Created by yyan</Footer>
+            <Footer style={{textAlign: 'center'}}>北京信息科技大学 ©2020 Created by bistu</Footer>
           </Layout>
 
 

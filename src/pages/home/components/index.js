@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import {Spin, Tabs, Button} from 'antd';
 import {checkError, checkEdit, getPageParam} from 'utils';
 import RegisterModal from 'components/RegisterModal';
+import router from "umi/router";
 
 import TaskTable from './TaskTable';
 import ApprovalTable from './ApprovalTable';
@@ -35,6 +36,14 @@ class ProductApp extends React.Component {
 
 
   componentDidMount() {
+    const userId = localStorage.getItem("userId");
+    const role = localStorage.getItem("role");
+
+    if (userId && role === "manager") {
+      this.getData();
+    } else {
+      router.push('/403');
+    }
     this.getData();
   }
 

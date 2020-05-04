@@ -65,8 +65,11 @@ export default {
 
     //  获取区块数据
     * getBlockData({payload, callback}, {call, put, select}) {
-      const {category = "total"} = payload;
+      let {category = "total",isTotal} = payload;
       const {data} = yield call(services.getBlock, payload);
+      if(isTotal){
+        category="total";
+      }
       if (data) {
         yield put({type: 'updateState', res: {[`${category}Data`]: data}});
       }

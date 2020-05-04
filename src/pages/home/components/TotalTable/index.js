@@ -28,6 +28,7 @@ class App extends React.Component {
   getData = (payload = {}) => {
     this.setState({loading: true});
     const _this = this;
+    payload.isTotal=true;
     this.props.dispatch({
       type: 'homeModel/getBlockData',
       payload,
@@ -111,6 +112,7 @@ class App extends React.Component {
 
     const {totalData} = this.props.homeModel;
     const {pageNumber, total, pageSize, rows} = totalData;
+    console.log("totalData",totalData)
     return (
       <div>
         <Spin spinning={loading}>

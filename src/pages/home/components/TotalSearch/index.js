@@ -70,7 +70,7 @@ class Search extends React.Component {
                   {id: "file", value: "文件"},
                   {id: "approval", value: "审批"},
                   {id: "comment", value: "评论"},
-                  {id: "rend", value: "阅读"},
+                  {id: "read", value: "阅读"},
                 ]}
               />
             </Col>

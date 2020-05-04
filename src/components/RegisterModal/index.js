@@ -6,6 +6,7 @@ import ConPassword from 'components/ConPassword';
 import ConInputTreeSelectPromise from 'components/ConInputTreeSelectPromise';
 import ConAutoEmail from 'components/ConAutoEmail';
 import ConInput from 'components/ConInput';
+import ConSelect from 'components/ConSelect';
 
 import styles from './index.less';
 
@@ -80,6 +81,18 @@ class Index extends React.Component {
                   message={'请选择部门'}
                   required={true}
                   onRef={ref => this.childTreeSelect = ref}
+                />
+
+                <ConSelect
+                  form={form}
+                  // formItemLayout={formItemLayout}
+                  id="role"
+                  label="角色"
+                  placeholder="角色"
+                  data={[
+                    {id: "manager", value: "管理人员"},
+                    {id: "user", value: "普通用户"},
+                  ]}
                 />
 
                 <ConInput
