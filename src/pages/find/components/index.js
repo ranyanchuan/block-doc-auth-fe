@@ -70,7 +70,7 @@ class App extends React.Component {
           {text === "待审批" &&
           <Badge status="processing" text={text}/>
           }
-          {(text === "到期" || text === "未申请") &&
+          {(text === "到期" || text === "未申请" || text === "驳回") &&
           <Badge status="default" text={text}/>
           }
 
