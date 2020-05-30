@@ -87,13 +87,12 @@ class App extends React.Component {
       dataIndex: 'action',
       key: 'action',
       render: (text, record) => (
-
         <span>
           {record.state === "未申请" &&
           <a onClick={this.onClickShow.bind(this, record)}>申请</a>
           }
 
-          {record.state === "驳回" &&
+          {(record.state === "驳回"  || record.state === "到期") &&
           <a onClick={this.onClickShow.bind(this, record)}>重新申请</a>
           }
 

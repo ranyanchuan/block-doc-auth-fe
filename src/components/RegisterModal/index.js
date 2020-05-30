@@ -85,6 +85,7 @@ class Index extends React.Component {
                   message={'请选择部门'}
                   required={true}
                   onRef={ref => this.childTreeSelect = ref}
+                  isParentDisabled={true}
                 />
 
                 <ConSelect

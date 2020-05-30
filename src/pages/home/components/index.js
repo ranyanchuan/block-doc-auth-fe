@@ -115,6 +115,8 @@ class ProductApp extends React.Component {
     } = dashboardData;
     const {activeKey, loading, registerModalVis} = this.state;
 
+    const role = localStorage.getItem("role");
+
 
     const operations = <Button style={{marginRight: 8}} onClick={this.onClickCreate}>创建用户</Button>;
 
@@ -179,7 +181,7 @@ class ProductApp extends React.Component {
             <Tabs
               defaultActiveKey={activeKey}
               onChange={this.onChangeTab}
-              tabBarExtraContent={operations}
+              tabBarExtraContent={role === "manager" ? operations : null}
             >
               <TabPane tab="我的待办" key="1"/>
               <TabPane tab="文件管理" key="2"/>

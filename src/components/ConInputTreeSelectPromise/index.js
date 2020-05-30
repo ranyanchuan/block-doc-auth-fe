@@ -272,8 +272,11 @@ class ConInputTreeSelectPromise extends React.Component {
       //  todo 优化
       if (children.length > 0) {
         result.isLeaf = false;
+        result.disabled = true;
+
       } else {
         result.isLeaf = true;
+        result.disabled = false;
       }
       result.value = item[treeOptionId];
       result.key = item[treeOptionId].toString();
@@ -340,11 +343,12 @@ class ConInputTreeSelectPromise extends React.Component {
       autoClearSearchValue = true,
       allowClear = true,
       formItemStyle,
-
+      isParentDisabled=false,
       formItemClass,
     } = this.props;
     const {getFieldDecorator} = form;
     const notFoundContent = loading ? <Spin size="small"/> : null;
+
 
     const tProps = {
       ...this.props,
@@ -381,6 +385,7 @@ class ConInputTreeSelectPromise extends React.Component {
             // initialValue: [],
           })(
             <TreeSelect
+              isParentDisabled={isParentDisabled}
               notFoundContent={loading ? <Spin size="small"/> : null}
               {...tProps}
               // value={this.state.defValue}
