@@ -7,8 +7,8 @@ export default {
       path: '/',
       component: '../layouts/index',
       routes: [
-        {path: '/', redirect: '/find'},
-        {path: '/find', component: './find/components/'},
+        {path: '/', redirect: '/index'},
+        {path: '/index', component: './find/components/'},
         {path: '/home', component: './home/components/'},
         {path: '/404', component: './404'},
         {path: '/403', component: './403'},

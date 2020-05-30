@@ -43,7 +43,7 @@ class BasicLayout extends React.Component {
   onLogout = () => {
     localStorage.clear();
     window.onload;
-    router.push('/find');
+    router.push('/index');
 
     // todo 走后端
     // this.props.dispatch({
@@ -192,7 +192,7 @@ class BasicLayout extends React.Component {
                          alt=""/>
                   </Menu.Item>
 
-                  <Menu.Item key='/find' style={{marginLeft: 10}}>
+                  <Menu.Item key='/index' style={{marginLeft: 10}}>
                     首页
                   </Menu.Item>
                   <Menu.Item key='/home' style={{marginLeft: 10}}>
