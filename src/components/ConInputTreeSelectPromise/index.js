@@ -270,9 +270,9 @@ class ConInputTreeSelectPromise extends React.Component {
       }
 
       //  todo 优化
-      if (children.length>0) {
+      if (children.length > 0) {
         result.isLeaf = false;
-      }else {
+      } else {
         result.isLeaf = true;
       }
       result.value = item[treeOptionId];
@@ -307,7 +307,24 @@ class ConInputTreeSelectPromise extends React.Component {
   render() {
 
     const {treeData, loading, defValue} = this.state;
-    const formatData = this.changeTreeData(treeData);
+
+
+    let tempData = this.changeTreeData(treeData);
+    let formatData = null;
+    // 判断是否超级管理员
+    if (localStorage.getItem("email") !== "admin@163.com") {
+      const departmentId = localStorage.getItem("departmentId");
+
+      for (let item of tempData) {
+        if (departmentId == item.key) {
+          formatData = [item];
+          break;
+        }
+      }
+    } else {
+      formatData = tempData;
+    }
+
 
     const {
       formItemLayout = {

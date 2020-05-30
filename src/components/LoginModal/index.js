@@ -63,7 +63,6 @@ class Index extends React.Component {
               {getFieldDecorator('email', {
                 // trigger: 'onBlur',
                 rules: [{required: true, message: '用户账号'}],
-
               })(
                 <Input
                   size="large"

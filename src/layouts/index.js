@@ -69,11 +69,12 @@ class BasicLayout extends React.Component {
         const {info, code, data} = param;
         let status = false;
         if (code == '200') {
-          const {id, name, token,role,departmentId} = data;
+          const {id, name, token,role,departmentId,email} = data;
           localStorage.setItem('userId', id);
           localStorage.setItem('userName', name);
           localStorage.setItem('token', token);
           localStorage.setItem('role', role);
+          localStorage.setItem('email', email);
           localStorage.setItem('departmentId', departmentId);
           status = true;
           this.getData();

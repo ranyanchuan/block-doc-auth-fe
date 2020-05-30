@@ -39,12 +39,15 @@ class ProductApp extends React.Component {
     const userId = localStorage.getItem("userId");
     const role = localStorage.getItem("role");
 
+
     if (userId && role === "manager") {
       this.getData();
     } else {
       router.push('/403');
     }
     this.getData();
+
+
   }
 
 
